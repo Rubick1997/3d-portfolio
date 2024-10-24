@@ -1,0 +1,123 @@
+{
+  "_three-CpHAp9iq.js": {
+    "file": "assets/three-CpHAp9iq.js",
+    "name": "three"
+  },
+  "_three-conic-polygon-geometry-Dh2DQGM7.js": {
+    "file": "assets/three-conic-polygon-geometry-Dh2DQGM7.js",
+    "name": "three-conic-polygon-geometry",
+    "imports": [
+      "_three-CpHAp9iq.js"
+    ]
+  },
+  "_three-geojson-geometry-DZVzqzjG.js": {
+    "file": "assets/three-geojson-geometry-DZVzqzjG.js",
+    "name": "three-geojson-geometry",
+    "imports": [
+      "_three-CpHAp9iq.js",
+      "_three-conic-polygon-geometry-Dh2DQGM7.js"
+    ]
+  },
+  "_three-globe-9MjA3hLf.js": {
+    "file": "assets/three-globe-9MjA3hLf.js",
+    "name": "three-globe",
+    "imports": [
+      "_three-CpHAp9iq.js",
+      "_three-geojson-geometry-DZVzqzjG.js",
+      "_three-conic-polygon-geometry-Dh2DQGM7.js"
+    ]
+  },
+  "_three-mesh-bvh-l0sNRNKZ.js": {
+    "file": "assets/three-mesh-bvh-l0sNRNKZ.js",
+    "name": "three-mesh-bvh"
+  },
+  "_three-render-objects-Dd7WPAXr.js": {
+    "file": "assets/three-render-objects-Dd7WPAXr.js",
+    "name": "three-render-objects",
+    "imports": [
+      "_three-CpHAp9iq.js",
+      "_three-globe-9MjA3hLf.js"
+    ]
+  },
+  "_three-stdlib-CQuMBENI.js": {
+    "file": "assets/three-stdlib-CQuMBENI.js",
+    "name": "three-stdlib",
+    "imports": [
+      "_three-CpHAp9iq.js"
+    ]
+  },
+  "index.html": {
+    "file": "assets/index-X9LfuKTB.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_three-globe-9MjA3hLf.js",
+      "_three-CpHAp9iq.js",
+      "_three-stdlib-CQuMBENI.js",
+      "_three-render-objects-Dd7WPAXr.js",
+      "_three-geojson-geometry-DZVzqzjG.js",
+      "_three-conic-polygon-geometry-Dh2DQGM7.js"
+    ],
+    "css": [
+      "assets/index-CsXRQCLj.css"
+    ],
+    "assets": [
+      "assets/grid1-8Mrw27Zl.png",
+      "assets/grid2-7FGSw9MY.png",
+      "assets/grid3-DVWfoKi2.png",
+      "assets/grid4-D5tiAUDl.png",
+      "assets/spotlight1-LG-n0ZG3.png",
+      "assets/spotlight2-wdOb749c.png",
+      "assets/spotlight3-DzjoSo52.png",
+      "assets/spotlight4-DwukE5au.png",
+      "assets/snodgrass-BhAwOJp2.png",
+      "assets/terminal--becMaf4.png",
+      "assets/fixinity_logo-Dm-tFtI4.png"
+    ]
+  },
+  "src/assets/images/fixinity_logo.png": {
+    "file": "assets/fixinity_logo-Dm-tFtI4.png",
+    "src": "src/assets/images/fixinity_logo.png"
+  },
+  "src/assets/images/grid1.png": {
+    "file": "assets/grid1-8Mrw27Zl.png",
+    "src": "src/assets/images/grid1.png"
+  },
+  "src/assets/images/grid2.png": {
+    "file": "assets/grid2-7FGSw9MY.png",
+    "src": "src/assets/images/grid2.png"
+  },
+  "src/assets/images/grid3.png": {
+    "file": "assets/grid3-DVWfoKi2.png",
+    "src": "src/assets/images/grid3.png"
+  },
+  "src/assets/images/grid4.png": {
+    "file": "assets/grid4-D5tiAUDl.png",
+    "src": "src/assets/images/grid4.png"
+  },
+  "src/assets/images/snodgrass.png": {
+    "file": "assets/snodgrass-BhAwOJp2.png",
+    "src": "src/assets/images/snodgrass.png"
+  },
+  "src/assets/images/spotlight1.png": {
+    "file": "assets/spotlight1-LG-n0ZG3.png",
+    "src": "src/assets/images/spotlight1.png"
+  },
+  "src/assets/images/spotlight2.png": {
+    "file": "assets/spotlight2-wdOb749c.png",
+    "src": "src/assets/images/spotlight2.png"
+  },
+  "src/assets/images/spotlight3.png": {
+    "file": "assets/spotlight3-DzjoSo52.png",
+    "src": "src/assets/images/spotlight3.png"
+  },
+  "src/assets/images/spotlight4.png": {
+    "file": "assets/spotlight4-DwukE5au.png",
+    "src": "src/assets/images/spotlight4.png"
+  },
+  "src/assets/images/terminal.png": {
+    "file": "assets/terminal--becMaf4.png",
+    "src": "src/assets/images/terminal.png"
+  }
+}
