@@ -9,7 +9,7 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 1700,
-    outDir: "build",
+    outDir: "dist",
     minify: "esbuild",
     manifest: true,
     sourcemap: false,

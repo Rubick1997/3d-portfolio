@@ -3158,6 +3158,4 @@ function DemoComputer(props: GroupProps) {
   );
 }
 
-useGLTF.preload("/models/demo-computer/scene.gltf");
-
 export default DemoComputer;

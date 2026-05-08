@@ -9,19 +9,19 @@ export default {
   		},
   		colors: {
   			black: {
-  				'100': '#010103',
-  				'200': '#0E0E10',
-  				'300': '#1C1C21',
-  				'500': '#3A3A49',
-  				'600': '#1A1A1A',
-  				DEFAULT: '#000'
+  				'100': 'rgb(var(--black-100) / <alpha-value>)',
+  				'200': 'rgb(var(--black-200) / <alpha-value>)',
+  				'300': 'rgb(var(--black-300) / <alpha-value>)',
+  				'500': 'rgb(var(--black-500) / <alpha-value>)',
+  				'600': 'rgb(var(--black-600) / <alpha-value>)',
+  				DEFAULT: 'rgb(var(--black) / <alpha-value>)'
   			},
   			white: {
-  				'500': '#62646C',
-  				'600': '#AFB0B6',
-  				'700': '#D6D9E9',
-  				'800': '#E4E4E6',
-  				DEFAULT: '#FFFFFF'
+  				'500': 'rgb(var(--white-500) / <alpha-value>)',
+  				'600': 'rgb(var(--white-600) / <alpha-value>)',
+  				'700': 'rgb(var(--white-700) / <alpha-value>)',
+  				'800': 'rgb(var(--white-800) / <alpha-value>)',
+  				DEFAULT: 'rgb(var(--white) / <alpha-value>)'
   			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

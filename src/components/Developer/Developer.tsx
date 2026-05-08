@@ -46,7 +46,7 @@ function Developer({ groupProps, animationName = "idle" }: DeveloperProps) {
     return function () {
       actions[animationName]?.fadeOut(0.5);
     };
-  }, [animationName]);
+  }, [actions, animationName]);
   return (
     <group {...groupProps} dispose={null} ref={group} position-y={-3}>
       <primitive object={nodes.Hips} />
@@ -117,8 +117,6 @@ function Developer({ groupProps, animationName = "idle" }: DeveloperProps) {
 }
 
 export default Developer;
-
-useGLTF.preload("/models/human/developer.glb");
 
 type DeveloperProps = {
   groupProps: GroupProps;

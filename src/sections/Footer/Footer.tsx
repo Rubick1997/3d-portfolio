@@ -1,35 +1,41 @@
 import { SiGithub, SiLinkedin } from "@icons-pack/react-simple-icons";
 import { Copyright } from "lucide-react";
+import { githubUrl, linkedinUrl } from "@/constants";
 
 function Footer() {
   return (
-    <section className="c-space pt-7 pb-3 border-t border-black-300 flex justify-between items-center flex-wrap gap-1">
-      <div className="text-white-500 flex gap-2">
-        <p>Terms & Conditions</p>
-        <p></p>
-        <p>Privacy Policy</p>
+    <footer className="c-space flex flex-col gap-5 border-t border-black-300 py-6 text-white-500 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p className="font-semibold text-white-700">Rustam Kolumbayev</p>
+        <p className="mt-1 text-sm">
+          Senior Software Engineer building production AI interfaces.
+        </p>
       </div>
       <div className="flex gap-3">
         <a
-          href="https://github.com/Rubick1997"
+          href={githubUrl}
           target="_blank"
+          rel="noreferrer"
           className="social-icon"
+          aria-label="Open GitHub profile"
         >
-          <SiGithub className="text-white w-1/2 w-1/2" />
+          <SiGithub className="h-1/2 w-1/2 text-white" />
         </a>
         <a
-          href="https://www.linkedin.com/in/rustam-kolumbayev"
+          href={linkedinUrl}
           target="_blank"
+          rel="noreferrer"
           className="social-icon"
+          aria-label="Open LinkedIn profile"
         >
-          <SiLinkedin className="text-white w-1/2 w-1/2" />
+          <SiLinkedin className="h-1/2 w-1/2 text-white" />
         </a>
       </div>
-      <div className="text-white-500 flex items-center gap-2">
-        <Copyright className="w-5 h-5" />
-        <p>2024 Rustam Kolumbayev. All rights reserved.</p>
+      <div className="flex items-center gap-2 text-sm">
+        <Copyright className="h-4 w-4" />
+        <p>2026 Rustam Kolumbayev. All rights reserved.</p>
       </div>
-    </section>
+    </footer>
   );
 }
 

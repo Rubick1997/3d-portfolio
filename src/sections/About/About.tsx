@@ -1,16 +1,22 @@
-import { Grid1, Grid2, Grid3, Grid4 } from "@/assets/images";
-import Globe from "react-globe.gl";
-import { Button } from "@/components";
+import { lazy, Suspense, useState } from "react";
+import { CheckIcon, CopyIcon, MapPin } from "lucide-react";
+import { useMediaQuery } from "react-responsive";
+import Grid1 from "@/assets/images/grid1.png";
+import Grid2 from "@/assets/images/grid2.png";
+import Grid3 from "@/assets/images/grid3.png";
+import Grid4 from "@/assets/images/grid4.png";
 import { Badge } from "@/components/ui/badge";
-import { email, keySkills } from "@/constants";
-import { useState } from "react";
-import { CheckIcon, CopyIcon } from "lucide-react";
+import { email, keySkills, profileHighlights } from "@/constants";
+
+const LocationGlobe = lazy(() => import("./LocationGlobe"));
 
 function About() {
   const [isCopied, setIsCopied] = useState(false);
+  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+  const reduceMotion = useMediaQuery({ query: "(prefers-reduced-motion: reduce)" });
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(email);
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(email);
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
@@ -18,140 +24,147 @@ function About() {
   };
 
   return (
-    <section className="c-space my-20" id="about">
-      <div className="grid xl:grid-cols-3 xl:grid-rows-6 md:grid-cols-2 grid-cols-1 gap-5 h-full">
-        <div className="col-span-1 xl:row-span-3">
-          <div className="grid-container">
-            <img
-              src={Grid1}
-              alt="grid-1"
-              className="w-full sm:h-[276px] h-fit object-contain"
-            />
-            <div>
-              <p className="grid-headtext">Hi, I'm Rustam</p>
-              <p className="grid-subtext">
-                With six years of experience, I have successfully developed
-                applications for Fortune 100 companies, startups, and everything
-                in between. In my pursuit of securing contracts with large
-                enterprises, I took full ownership of the UI development
-                process, designing and implementing robust software solutions.
-              </p>
-            </div>
+    <section className="c-space my-20 scroll-mt-24" id="about">
+      <div className="mb-10 max-w-3xl">
+        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white-500">
+          Profile
+        </p>
+        <h2 className="head-text mt-3">
+          Frontend architecture for serious AI products
+        </h2>
+        <p className="mt-4 text-lg leading-8 text-white-600">
+          My work sits where AI capability becomes product experience: data
+          visualization, recommendation flows, collaboration, observability,
+          and interfaces that make complex systems feel clear.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <article className="grid-container xl:col-span-1">
+          <img
+            src={Grid1}
+            alt=""
+            className="h-44 w-full object-contain sm:h-56"
+            loading="lazy"
+          />
+          <div>
+            <p className="grid-headtext">What I build</p>
+            <ul className="grid-subtext space-y-3">
+              {profileHighlights.map((highlight) => (
+                <li key={highlight} className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-white-700" />
+                  <span>{highlight}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-        <div className="col-span-1 xl:row-span-3">
-          <div className="grid-container">
-            <img
-              src={Grid2}
-              alt="grid-2"
-              className="w-full sm:w-[246px] h-fit object-contain"
-            />
-            <div>
-              <p className="grid-headtext">Tech stack</p>
-              <p className="grid-subtext">
-                I specialize in JavaScript and TypeScript, with a strong
-                emphasis on the React and Next.js ecosystems.
-              </p>
-            </div>
-            <div>
-              <p className="grid-headtext">Key Skills</p>
-              <div className="grid-subtext">
-                {keySkills.map((skill) => (
-                  <Badge
-                    variant="secondary"
-                    key={skill}
-                    className="m-1 bg-[#afb0b6]"
-                  >
-                    {skill}
-                  </Badge>
-                ))}
+        </article>
+
+        <article className="grid-container xl:col-span-1">
+          <img
+            src={Grid2}
+            alt=""
+            className="h-32 w-full object-contain sm:h-44"
+            loading="lazy"
+          />
+          <div>
+            <p className="grid-headtext">Core stack</p>
+            <p className="grid-subtext">
+              React and TypeScript are the center of gravity, with production
+              AI, data visualization, monitoring, and cloud-security work around
+              them.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {keySkills.map((skill) => (
+              <Badge
+                variant="secondary"
+                key={skill}
+                className="border border-white/10 bg-[#afb0b6] text-black"
+              >
+                {skill}
+              </Badge>
+            ))}
+          </div>
+        </article>
+
+        <article className="grid-container xl:col-span-1">
+          <div className="flex min-h-[220px] items-center justify-center rounded-lg border border-white/10 bg-black-300/50">
+            {isDesktop && !reduceMotion ? (
+              <Suspense
+                fallback={
+                  <div className="flex h-[220px] items-center justify-center text-white-600">
+                    Seattle, WA
+                  </div>
+                }
+              >
+                <LocationGlobe />
+              </Suspense>
+            ) : (
+              <div className="flex flex-col items-center gap-3 text-white">
+                <MapPin className="h-10 w-10 text-white-700" />
+                <p className="text-lg font-semibold">Seattle, WA</p>
               </div>
-            </div>
+            )}
           </div>
-        </div>
-        <div className="col-span-1 xl:row-span-4">
-          <div className="grid-container">
-            <div className="rounded-3xl w-full sm:h-[326px] h-fit flex justify-center items-center">
-              <Globe
-                height={326}
-                width={326}
-                backgroundColor="rgba(0,0,0,0)"
-                showAtmosphere
-                showGraticules
-                showGlobe
-                globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
-                bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-                labelsData={[
-                  {
-                    lat: 47.6,
-                    lng: -122.3,
-                    color: "white",
-                    size: 20,
-                  },
-                ]}
-              />
-            </div>
-            <div>
-              <p className="grid-headtext">
-                I work remotely across multiple timezones
-              </p>
-              <p className="grid-subtext">
-                Based in Seattle, USA with remote work available
-              </p>
-            </div>
-            <a href="#contact">
-              <Button
-                name="Contact Me"
-                containerClassName="w-full mt-10"
-                isBeam
-              />
-            </a>
+          <div>
+            <p className="grid-headtext">Remote-friendly delivery</p>
+            <p className="grid-subtext">
+              Based in the Greater Seattle Area, with experience leading work
+              across clients, backend teams, data science, and distributed
+              engineering groups.
+            </p>
           </div>
-        </div>
-        <div className="xl:col-span-2 xl:row-span-3">
-          <div className="grid-container">
-            <img
-              src={Grid3}
-              alt="grid-3"
-              className="w-full sm:h-[266px] h-fit object-contain"
-            />
-            <div>
-              <p className="grid-headtext">Why I Chose This</p>
-              <p className="grid-subtext">
-                My choice extends beyond coding; it centers on strong
-                problem-solving skills and effective communication with
-                cross-functional teams, including backend engineers and clients.
-                By fostering open dialogue, I ensure alignment on project
-                developments and expectations, allowing us to identify potential
-                issues early. This collaborative approach enhances my ability to
-                create innovative solutions that meet the needs of all
-                stakeholders.
-              </p>
-            </div>
+          <a href="#contact" className="btn mt-auto w-full">
+            Contact me
+          </a>
+        </article>
+
+        <article className="grid-container md:col-span-2">
+          <img
+            src={Grid3}
+            alt=""
+            className="h-44 w-full object-contain sm:h-56"
+            loading="lazy"
+          />
+          <div>
+            <p className="grid-headtext">How I work</p>
+            <p className="grid-subtext">
+              I like products where the hard part is not just calling a model or
+              an API, but shaping the workflow around it. I bring the frontend
+              architecture, product judgment, and cross-functional translation
+              needed to make complex systems usable without flattening their
+              power.
+            </p>
           </div>
-        </div>
-        <div className="xl:col-span-1 xl:row-span-2">
-          <div className="grid-container">
-            <img
-              src={Grid4}
-              alt="grid-4"
-              className="w-full md:h-[126px] sm:h-[276px] h-fit object-cover sm:object-top"
-            />
-            <div className="space-y-2">
-              <p className="grid-subtext text-center">Contact me</p>
-              <div className="copy-container" onClick={handleCopy}>
-                {isCopied ? (
-                  <CheckIcon className="h-5 w-5 text-green-600" />
-                ) : (
-                  <CopyIcon className="h-5 w-5 text-white" />
-                )}
-                <p className="lg:text-2xl md:text-xl font-medium text-gray_gradient text-white">
-                  {email}
-                </p>
-              </div>
-            </div>
+        </article>
+
+        <article className="grid-container">
+          <img
+            src={Grid4}
+            alt=""
+            className="h-36 w-full object-cover object-top"
+            loading="lazy"
+          />
+          <div className="space-y-3">
+            <p className="grid-subtext text-center">Direct contact</p>
+            <button
+              type="button"
+              className="copy-container w-full rounded-md border border-white/10 bg-black-300 px-3 py-3"
+              onClick={handleCopy}
+              aria-label={`Copy ${email}`}
+            >
+              {isCopied ? (
+                <CheckIcon className="h-5 w-5 text-green-500" />
+              ) : (
+                <CopyIcon className="h-5 w-5 text-white" />
+              )}
+              <span className="break-all text-base font-medium text-white sm:text-lg">
+                {email}
+              </span>
+            </button>
           </div>
-        </div>
+        </article>
       </div>
     </section>
   );

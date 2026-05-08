@@ -56,6 +56,4 @@ function PythonModel(props: GroupProps) {
   );
 }
 
-useGLTF.preload("/models/python/scene.gltf");
-
 export default PythonModel;

@@ -44,6 +44,4 @@ function ReactModel(props: GroupProps) {
   );
 }
 
-useGLTF.preload("/models/react/scene.gltf");
-
 export default ReactModel;

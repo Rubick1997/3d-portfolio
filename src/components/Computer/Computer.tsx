@@ -63,6 +63,4 @@ function Computer(props: GroupProps) {
   );
 }
 
-useGLTF.preload("/models/computer/scene.gltf");
-
 export default Computer;

@@ -51,6 +51,4 @@ function JavascriptModel(props: GroupProps) {
   );
 }
 
-useGLTF.preload("/models/javascript/scene.gltf");
-
 export default JavascriptModel;

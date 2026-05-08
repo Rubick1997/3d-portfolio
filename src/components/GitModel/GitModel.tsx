@@ -31,6 +31,4 @@ function GitModel(props: GroupProps) {
   );
 }
 
-useGLTF.preload("/models/git/scene.gltf");
-
 export default GitModel;

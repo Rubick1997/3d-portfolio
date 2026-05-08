@@ -2,7 +2,6 @@ import {
   Hero,
   Navbar,
   About,
-  Projects,
   Contact,
   Footer,
   Experience,
@@ -14,7 +13,6 @@ function App() {
       <Navbar />
       <Hero />
       <About />
-      <Projects />
       <Experience />
       <Contact />
       <Footer />

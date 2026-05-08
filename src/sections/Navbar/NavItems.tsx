@@ -1,6 +1,6 @@
 import { navLinks } from "@/constants";
 
-function NavItems() {
+function NavItems({ onItemClick }: NavItemsProps) {
   return (
     <ul className="nav-ul">
       {navLinks.map(({ id, href, name, icon }) => {
@@ -9,7 +9,7 @@ function NavItems() {
             <a
               href={href}
               className="nav-li_a flex items-center gap-1"
-              onClick={() => {}}
+              onClick={onItemClick}
             >
               {icon}
               <p>{name}</p>
@@ -22,3 +22,7 @@ function NavItems() {
 }
 
 export default NavItems;
+
+type NavItemsProps = {
+  onItemClick?: () => void;
+};
