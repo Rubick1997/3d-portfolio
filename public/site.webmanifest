@@ -1,0 +1,9 @@
+{
+  "name": "Rustam Kolumbayev Portfolio",
+  "short_name": "Rustam Kolumbayev",
+  "description": "Senior Software Engineer building production AI interfaces with React, TypeScript, LLMs, RAG, gRPC, D3.js, and WebSockets.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#010103",
+  "theme_color": "#010103"
+}
