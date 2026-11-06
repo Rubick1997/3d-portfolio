@@ -17,7 +17,8 @@ function start(canvas: HTMLCanvasElement) {
   };
 
   resize();
-  const lines = Array.from({ length: w < 500 ? 14 : 22 }, (_, i) => ({
+  const small = w < 640;
+  const lines = Array.from({ length: small ? 12 : 22 }, (_, i) => ({
     color: COLORS[i % COLORS.length],
     y: 0.35 + (i / 22) * 0.55,
     amp: 18 + (i % 5) * 9,
@@ -32,7 +33,7 @@ function start(canvas: HTMLCanvasElement) {
     ctx.globalCompositeOperation = "lighter";
     for (const l of lines) {
       ctx.beginPath();
-      for (let x = -10; x <= w + 10; x += 8) {
+      for (let x = -10; x <= w + 10; x += small ? 14 : 8) {
         const y =
           l.y * h +
           Math.sin(x * l.freq + l.phase + t * l.speed) * l.amp +
@@ -45,8 +46,12 @@ function start(canvas: HTMLCanvasElement) {
     }
   };
 
+  let last = 0;
   const loop = (t: number) => {
-    draw(t);
+    if (t - last > 33) {
+      draw(t);
+      last = t;
+    }
     if (visible && !document.hidden) raf = requestAnimationFrame(loop);
   };
 
@@ -64,4 +69,8 @@ function start(canvas: HTMLCanvasElement) {
   });
 }
 
-document.querySelectorAll<HTMLCanvasElement>("canvas[data-flow]").forEach(start);
+// Decoration waits until the page has loaded and the main thread is idle.
+const boot = () => document.querySelectorAll<HTMLCanvasElement>("canvas[data-flow]").forEach(start);
+const idle = (cb: () => void) => ("requestIdleCallback" in window ? requestIdleCallback(cb, { timeout: 2500 }) : setTimeout(cb, 1200));
+if (document.readyState === "complete") idle(boot);
+else addEventListener("load", () => idle(boot), { once: true });

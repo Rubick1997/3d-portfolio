@@ -13,7 +13,7 @@ interface Props {
 }
 
 const { title, description = site.description, path, ogImage = "/og/home.png", ogType = "website", jsonLd = [] } = Astro.props;
-const fullTitle = title ? `${title} | Rustam Kolumbayev` : site.title;
+const fullTitle = !title ? site.title : title.length > 42 ? title : `${title} | Rustam Kolumbayev`;
 const canonical = new URL(path, site.url).href;
 const image = new URL(ogImage, site.url).href;
 ---

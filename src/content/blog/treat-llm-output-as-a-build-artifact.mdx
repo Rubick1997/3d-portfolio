@@ -22,7 +22,7 @@ Twelve items give 2¹² − 1 = 4,095 possible selections, which is few enough t
 
 That makes the model’s output a build artifact: a build step generates and checks every paragraph offline and writes each one to a static file. The model now runs once, at build time, the way a compiler does.
 
-![](../../assets/blog/treat-llm-output-as-a-build-artifact/02.png)
+![Diagram: before, every click runs 11 data calls and 7 model calls on the server and takes 31 s; after, a build step writes 4,095 static JSON files once and the visitor fetches one ~2 KB file from a CDN with no model call](../../assets/blog/treat-llm-output-as-a-build-artifact/02.png)
 
 The examples below use a made-up online shop instead of the original project. It has 12 filters such as “waterproof” and “vegan materials”, which gives 4,095 filter combinations, and each combination gets a short “who buys this” paragraph grounded in the shop’s own product attributes and reviews.
 
@@ -53,7 +53,7 @@ To ship before the run finishes, sort the work queue by how close each combinati
 
 With the model out of the request path, there is time to check its work. The pipeline uses that time so that every sentence a shopper reads can be traced back to data.
 
-![](../../assets/blog/treat-llm-output-as-a-build-artifact/03.png)
+![Diagram of the build pipeline run for each combination: evidence, claims, rule checks, fact-check, repair, paragraph, faithfulness check and ship, with the writer model, the judge model and plain code steps marked](../../assets/blog/treat-llm-output-as-a-build-artifact/03.png)
 
 Each combination goes through nine steps.
 
@@ -263,7 +263,7 @@ Because finished calls are cache hits, a stopped run resumes for free. Changing 
 
 The shipped setup cost about $0.03 per combination, a quarter of the first setup.
 
-![](../../assets/blog/treat-llm-output-as-a-build-artifact/04.png)
+![Bar chart of cost per combination: frontier writer and frontier judge at full price $0.12, cheaper writer with small judge about $0.02 but not shipped, frontier writer with small judge batched $0.03 and shipped](../../assets/blog/treat-llm-output-as-a-build-artifact/04.png)
 
 The first setup used a frontier model for both writing and judging, at full price, and cost about $0.12 per combination, or about $490 projected for all 4,095. The cheaper writer with batching and Jev cost $0.017 to $0.02 per combination, but its paragraphs weren’t good enough to ship.
 

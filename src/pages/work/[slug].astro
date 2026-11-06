@@ -7,7 +7,8 @@ import Arrow from "@/components/Arrow.astro";
 import ContactCard from "@/components/ContactCard.astro";
 import Colophon from "@/components/Colophon.astro";
 import { work, type CaseStudy } from "@/data/work";
-import { breadcrumbs } from "@/lib/jsonld";
+import { breadcrumbs, personId } from "@/lib/jsonld";
+import { site } from "@/data/profile";
 import BitmaskDemo from "@/components/demos/BitmaskDemo.astro";
 import FocalDemo from "@/components/demos/FocalDemo.astro";
 
@@ -37,6 +38,18 @@ const h2 = "font-mono text-xs font-medium uppercase tracking-[0.18em] text-subtl
   ogImage={`/og/work/${w.slug}.png`}
   ogType="article"
   jsonLd={[
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": `${site.url}/work/${w.slug}#article`,
+      headline: w.title,
+      description: w.summary,
+      url: `${site.url}/work/${w.slug}`,
+      image: `${site.url}/og/work/${w.slug}.png`,
+      author: { "@type": "Person", "@id": personId, name: site.name, url: `${site.url}/` },
+      about: w.stack,
+      inLanguage: "en-US",
+    },
     breadcrumbs([
       { name: "Home", path: "/" },
       { name: "Work", path: "/#work" },

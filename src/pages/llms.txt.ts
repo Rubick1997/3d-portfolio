@@ -9,7 +9,7 @@ export const GET: APIRoute = async () => {
   const body = [
     `# ${profile.name}`,
     "",
-    `> ${profile.positioning} ${profile.subline}`,
+    `> ${profile.role}, Seattle. ${profile.positioning}`,
     "",
     profile.shortBio,
     "",

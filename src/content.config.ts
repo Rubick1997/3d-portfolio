@@ -6,6 +6,7 @@ const blog = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/blog" }),
   schema: z.object({
     title: z.string(),
+    seoTitle: z.string().max(60).optional(),
     subtitle: z.string().optional(),
     description: z.string().max(300),
     date: z.coerce.date(),

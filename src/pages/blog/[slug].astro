@@ -53,7 +53,7 @@ const h2s = headings.filter((h) => h.depth === 2);
 ---
 
 <Base
-  title={d.title}
+  title={d.seoTitle ?? d.title}
   description={d.description}
   path={postUrl(post)}
   ogImage={ogImage}
