@@ -16,13 +16,13 @@ export const profile = {
   positioning:
     "I build AI features end to end, from the data and the model to the screen people use, and I make sure the AI is actually right.",
   subline:
-    "Senior engineer at Qloo, owning TasteDive, the Insights dashboard and qloo.com. Seattle.",
+    "Senior engineer at Qloo, owning a consumer recommendations site, an enterprise analytics dashboard and the company website. Seattle.",
   now: "Building AI features at Qloo and grading frontier coding agents for Mercor.",
   shortBio:
     "I'm an AI product engineer with about six years of experience. I own features end to end, from the data and the backend to the screen the user actually touches, and more and more of that work involves AI.",
   longBio: [
     "I'm an AI product engineer with about six years of experience. My strength is the layer where people meet the system, especially AI.",
-    "At Qloo I own three products end to end: TasteDive, the Insights dashboard and qloo.com.",
+    "At Qloo I own three products end to end: a consumer recommendations site, an enterprise analytics dashboard and the company website.",
     "Through Mercor, I write coding tasks and rubrics that frontier labs use to train and grade coding agents, which taught me where agents fail and how they fake success.",
     "In my own pipelines, every sentence the model writes is fact-checked against real data before a user sees it.",
     "Before engineering, I earned a law degree. I write up my projects so other engineers can reuse them.",
@@ -58,7 +58,7 @@ export const links = {
   medium: "https://medium.com/@vinch1910",
   // Flip once the files/cleanup exist (see brief §4 GitHub cleanup, §6 résumé).
   showGithub: false,
-  resume: null as string | null, // e.g. "/resume.pdf" once the updated PDF is added to /public
+  resume: "/resume.pdf" as string | null,
 } as const;
 
 export type Principle = { title: string; body: string; proof: { label: string; href: string } };
@@ -67,12 +67,12 @@ export const principles: Principle[] = [
   {
     title: "Prototype, don't argue",
     body: "When a disagreement is about facts, a prototype settles it faster than a debate.",
-    proof: { label: "TasteDive hero banners", href: "/work/tastedive-hero-banners" },
+    proof: { label: "Face-aware hero banners", href: "/work/face-aware-hero-banners" },
   },
   {
     title: "Precompute what you can list",
     body: "If you can list every input, generate and check the answers ahead of time.",
-    proof: { label: "Taste Context", href: "/work/taste-context" },
+    proof: { label: "LLM output as a build artifact", href: "/work/llm-output-as-build-artifact" },
   },
   {
     title: "Verify before users see it",
@@ -82,7 +82,7 @@ export const principles: Principle[] = [
   {
     title: "Fix the system, not the page",
     body: "Fixing the shared palette and type scale fixed it everywhere at once.",
-    proof: { label: "Insights dashboard", href: "/work/insights-dashboard" },
+    proof: { label: "Analytics dashboard rebuild", href: "/work/analytics-dashboard-rebuild" },
   },
 ];
 
@@ -102,18 +102,18 @@ export const experience: Role[] = [
     org: "Qloo",
     title: "Senior Software Engineer",
     period: "Feb 2025 – Present",
-    summary: "I own TasteDive, the Insights dashboard and qloo.com end to end.",
+    summary: "I own a consumer recommendations site, an enterprise analytics dashboard and the company website, end to end.",
     bullets: [
-      "Took Taste Context from a one-line idea to production in about two days: 31 s per request to an instant static file.",
-      "Rebuilt the Insights frontend architecture for 40% faster page load.",
+      "Took an LLM personalization feature from a one-line idea to production in about two days: 31 s per request to an instant static file.",
+      "Rebuilt the analytics dashboard's frontend architecture for 40% faster page load.",
       "Led SOC 2 Type II compliance.",
     ],
     tags: ["Next.js", "TypeScript", "React", "D3.js", "LLMs"],
-    work: "taste-context",
+    work: "llm-output-as-build-artifact",
   },
   {
     org: "Mercor",
-    title: "AI Evaluation Contributor & Benchmark Reviewer (contract)",
+    title: "AI Evaluation Contributor (part-time contract)",
     period: "2025 – Present",
     summary: "Codebase-grounded tasks and rubrics used to train and grade frontier coding agents.",
     bullets: [

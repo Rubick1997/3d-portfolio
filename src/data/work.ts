@@ -27,9 +27,9 @@ export type CaseStudy = {
 
 export const work: CaseStudy[] = [
   {
-    slug: "taste-context",
-    title: "Taste Context: treating LLM output as a build artifact",
-    org: "Qloo · qloo.com",
+    slug: "llm-output-as-build-artifact",
+    title: "Treating LLM output as a build artifact",
+    org: "Qloo · company website",
     kicker: "LLM pipeline · cost & latency",
     summary:
       "Twelve interests give only 4,095 combinations, so I generated and fact-checked every answer ahead of time. Latency went from 31 seconds to instant, for about $121.",
@@ -75,9 +75,9 @@ export const work: CaseStudy[] = [
     related: [{ title: "Treat LLM Output as a Build Artifact: Batch APIs and Jev", href: "/blog/treat-llm-output-as-a-build-artifact" }],
   },
   {
-    slug: "tastedive-hero-banners",
+    slug: "face-aware-hero-banners",
     title: "Face-aware hero banners for 2 million+ pages",
-    org: "Qloo · TasteDive",
+    org: "Qloo · consumer recommendations site",
     kicker: "On-device ML · SSR performance",
     summary:
       "A centered crop was cutting people's heads off. I find the focal point once on the server, with no GPU and no paid vision API, and one CSS value keeps it in view.",
@@ -125,12 +125,12 @@ export const work: CaseStudy[] = [
     ],
   },
   {
-    slug: "insights-dashboard",
-    title: "Rebuilding the Insights dashboard",
-    org: "Qloo · Insights",
+    slug: "analytics-dashboard-rebuild",
+    title: "Rebuilding an enterprise analytics dashboard",
+    org: "Qloo · analytics dashboard",
     kicker: "Frontend architecture · design system",
     summary:
-      "Insights is where Fortune 100 clients see Qloo's ML results over 3.7B+ lifestyle entities. I rebuilt the frontend and the shared system under it.",
+      "The dashboard is where Fortune 100 clients see Qloo's ML results over 3.7B+ lifestyle entities. I rebuilt the frontend and the shared system under it.",
     featured: true,
     metrics: [
       { value: "−40%", label: "page load time" },
@@ -139,20 +139,20 @@ export const work: CaseStudy[] = [
       { value: "+25%", label: "dashboard adoption" },
     ],
     problem: [
-      "Insights is where Fortune 100 clients see Qloo's ML results over 3.7B+ lifestyle entities.",
+      "The dashboard is where Fortune 100 clients see Qloo's ML results over 3.7B+ lifestyle entities.",
       "Before the rebuild, a new panel type could take a week just to reach dev.",
     ],
     constraints: [],
     approach: [
       "I rebuilt the frontend architecture, and moved from JavaScript to TypeScript.",
       "I built React + D3.js visualizations over REST and WebSockets.",
-      "I made one panel component with a type prop, plus a shared design-token library used across Insights, TasteDive and qloo.com.",
+      "I made one panel component with a type prop, plus a shared design-token library used across all three of the products I own.",
       "I switched the written insights to batch prompting with ChatGPT and Claude.",
     ],
     decision: {
       title: "Fix the collaboration bug at the root",
       body: [
-        "Real-time collaboration (shared cursors, comments, presence) through Velt had an initialization-timing bug.",
+        "Real-time collaboration (shared cursors, comments, presence) through a third-party SDK had an initialization-timing bug.",
         "I moved initialization into one root provider. Engagement rose 48% after the fix.",
       ],
     },
@@ -164,7 +164,7 @@ export const work: CaseStudy[] = [
       "A new panel now goes from start to production in about a week.",
     ],
     differently: [],
-    stack: ["React", "TypeScript", "D3.js", "WebSockets", "Velt", "Sentry", "Design tokens"],
+    stack: ["React", "TypeScript", "D3.js", "WebSockets", "Real-time collaboration SDK", "Sentry", "Design tokens"],
     related: [],
   },
   {
@@ -269,7 +269,7 @@ export const moreWork: { title: string; body: string }[] = [
     body: "Reached a demo in about a week by trading drag-and-drop for an ordered list with multi-column sort. We won the contract; drag-and-drop came later.",
   },
   {
-    title: "TasteDive accessibility",
+    title: "Accessibility on the consumer site",
     body: "Fixed contrast by aligning to the shared tokens, enlarged tap targets, verified with Lighthouse and Semrush. Accessibility problems often come from a system nobody follows.",
   },
   { title: "ReferrsMe", body: "Frontend for a referral-based job platform with 1,000+ active users and sub-2-second page loads." },
