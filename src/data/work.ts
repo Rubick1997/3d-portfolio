@@ -29,7 +29,7 @@ export const work: CaseStudy[] = [
   {
     slug: "llm-output-as-build-artifact",
     title: "Treating LLM output as a build artifact",
-    org: "Qloo · company website",
+    org: "Production LLM feature",
     kicker: "LLM pipeline · cost & latency",
     summary:
       "Twelve interests give only 4,095 combinations, so I generated and fact-checked every answer ahead of time. Latency went from 31 seconds to instant, for about $121.",
@@ -59,7 +59,7 @@ export const work: CaseStudy[] = [
     results: [
       "All 4,095 combinations shipped. The main run took ~53 minutes and cost ~$121, about 3 cents per combination and roughly a quarter of the original setup.",
       "Latency went from 31 seconds to instant.",
-      "One-line idea to production in about two days. The CPO and CEO signed off.",
+      "One-line idea to production in about two days.",
     ],
     failures: [
       "The main run finished 4,077 combinations. Of the last 18, 10 went through on retries. The other 8 kept failing because Jev flagged correct claims as overstated: the criteria never said that naming two signals together was allowed.",
@@ -77,7 +77,7 @@ export const work: CaseStudy[] = [
   {
     slug: "face-aware-hero-banners",
     title: "Face-aware hero banners for 2 million+ pages",
-    org: "Qloo · consumer recommendations site",
+    org: "Consumer recommendations site",
     kicker: "On-device ML · SSR performance",
     summary:
       "A centered crop was cutting people's heads off. I find the focal point once on the server, with no GPU and no paid vision API, and one CSS value keeps it in view.",
@@ -105,8 +105,8 @@ export const work: CaseStudy[] = [
     decision: {
       title: "Prototype instead of debating",
       body: [
-        "The CPO was skeptical. Their worries were that it would be slow, that it was an SEO risk, and that it would need an expensive Gemini setup.",
-        "I built a prototype in about a day and showed the pages side by side. The CPO then asked me to apply it to other categories and to present it to the company.",
+        "When a disagreement is about facts, a prototype settles it faster than a debate.",
+        "I built a prototype in about a day and showed the pages side by side.",
       ],
     },
     results: [
@@ -127,10 +127,10 @@ export const work: CaseStudy[] = [
   {
     slug: "analytics-dashboard-rebuild",
     title: "Rebuilding an enterprise analytics dashboard",
-    org: "Qloo · analytics dashboard",
+    org: "Enterprise analytics dashboard",
     kicker: "Frontend architecture · design system",
     summary:
-      "The dashboard is where Fortune 100 clients see Qloo's ML results over 3.7B+ lifestyle entities. I rebuilt the frontend and the shared system under it.",
+      "An enterprise dashboard where Fortune 100 clients explore ML results across billions of entities. I rebuilt the frontend and the shared system under it.",
     featured: true,
     metrics: [
       { value: "−40%", label: "page load time" },
@@ -139,7 +139,7 @@ export const work: CaseStudy[] = [
       { value: "+25%", label: "dashboard adoption" },
     ],
     problem: [
-      "The dashboard is where Fortune 100 clients see Qloo's ML results over 3.7B+ lifestyle entities.",
+      "The dashboard is where Fortune 100 clients explore ML results across billions of entities.",
       "Before the rebuild, a new panel type could take a week just to reach dev.",
     ],
     constraints: [],
@@ -262,7 +262,7 @@ export const moreWork: { title: string; body: string }[] = [
   },
   {
     title: "API evaluation tool for sales engineers",
-    body: "Started from a one-sentence CPO ask. V1's “AI buttons everywhere” were cut down to one workflow.",
+    body: "Started from a one-sentence request. V1's “AI buttons everywhere” were cut down to one workflow.",
   },
   {
     title: "SDG&E drone-inspection dashboard",

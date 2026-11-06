@@ -7,7 +7,7 @@
 @import "@fontsource/ibm-plex-mono/500.css";
 
 /* Design tokens: color, type, space, radius. Same shape as the shared token library
-   I built at Qloo. Change a token here, and every component follows. */
+   I have built before. Change a token here, and every component follows. */
 :root {
   --color-bg: #f7f9fc;
   --color-surface: #ffffff;

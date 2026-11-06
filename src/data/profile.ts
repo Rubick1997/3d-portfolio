@@ -7,7 +7,7 @@ export const site = {
   name: "Rustam Kolumbayev",
   title: "Rustam Kolumbayev, AI Product Engineer",
   description:
-    "AI product engineer. I build AI features end to end, and make sure the AI is actually right. Senior engineer at Qloo, based in Seattle.",
+    "AI product engineer. I build AI features end to end, and make sure the AI is actually right. Based in Seattle.",
 } as const;
 
 export const profile = {
@@ -16,13 +16,13 @@ export const profile = {
   positioning:
     "I build AI features end to end, from the data and the model to the screen people use, and I make sure the AI is actually right.",
   subline:
-    "Senior engineer at Qloo, owning a consumer recommendations site, an enterprise analytics dashboard and the company website. Seattle.",
-  now: "Building AI features at Qloo and grading frontier coding agents for Mercor.",
+    "Senior engineer owning a consumer recommendations site, an enterprise analytics dashboard and a company website. Seattle.",
+  now: "Building production AI features and grading frontier coding agents for Mercor.",
   shortBio:
     "I'm an AI product engineer with about six years of experience. I own features end to end, from the data and the backend to the screen the user actually touches, and more and more of that work involves AI.",
   longBio: [
     "I'm an AI product engineer with about six years of experience. My strength is the layer where people meet the system, especially AI.",
-    "At Qloo I own three products end to end: a consumer recommendations site, an enterprise analytics dashboard and the company website.",
+    "At work I own three products end to end: a consumer recommendations site, an enterprise analytics dashboard and a company website.",
     "Through Mercor, I write coding tasks and rubrics that frontier labs use to train and grade coding agents, which taught me where agents fail and how they fake success.",
     "In my own pipelines, every sentence the model writes is fact-checked against real data before a user sees it.",
     "Before engineering, I earned a law degree. I write up my projects so other engineers can reuse them.",
@@ -112,12 +112,12 @@ export const experience: Role[] = [
     period: "Feb 2025 – Present",
     summary: "I own a consumer recommendations site, an enterprise analytics dashboard and the company website, end to end.",
     bullets: [
-      "Took an LLM personalization feature from a one-line idea to production in about two days: 31 s per request to an instant static file.",
+      "Cut LLM API costs by 50% with batch prompting.",
       "Rebuilt the analytics dashboard's frontend architecture for 40% faster page load.",
       "Led SOC 2 Type II compliance.",
     ],
     tags: ["Next.js", "TypeScript", "React", "D3.js", "LLMs"],
-    work: "llm-output-as-build-artifact",
+    work: "analytics-dashboard-rebuild",
   },
   {
     org: "Mercor",
