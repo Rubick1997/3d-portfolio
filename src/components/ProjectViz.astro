@@ -1,0 +1,82 @@
+---
+// Abstract, product-free illustrations for featured work (NDA-safe). Decorative only.
+interface Props { slug: string; class?: string }
+const { slug, class: cls = "" } = Astro.props;
+
+const cols = 16, rows = 6;
+const cells = Array.from({ length: cols * rows }, (_, i) => ({
+  x: (i % cols) * 11,
+  y: Math.floor(i / cols) * 11,
+  delay: (((i * 37) % (cols * rows)) / (cols * rows)) * 3.2,
+}));
+const bars = [0.55, 0.8, 0.45, 0.95, 0.7, 0.6, 0.85];
+---
+
+<svg
+  class:list={["viz h-auto w-full", cls]}
+  viewBox="0 0 180 72"
+  fill="none"
+  aria-hidden="true"
+  preserveAspectRatio="xMidYMid meet"
+>
+  {
+    slug === "llm-output-as-build-artifact" && (
+      <g transform="translate(3 3)">
+        {cells.map((c) => (
+          <rect class="cell" x={c.x} y={c.y} width="8" height="8" rx="1.5" style={`animation-delay:${c.delay.toFixed(2)}s`} />
+        ))}
+      </g>
+    )
+  }
+  {
+    slug === "face-aware-hero-banners" && (
+      <g>
+        <rect x="58" y="2" width="64" height="68" rx="6" stroke="currentColor" stroke-opacity="0.25" />
+        <circle cx="90" cy="22" r="11" fill="currentColor" fill-opacity="0.55" />
+        <path d="M66 70c2-16 12-24 24-24s22 8 24 24" fill="currentColor" fill-opacity="0.3" />
+        <circle cx="90" cy="22" r="2.2" fill="currentColor" />
+        <circle cx="90" cy="22" r="5.5" stroke="currentColor" stroke-dasharray="2 2" />
+        <g class="crop">
+          <rect x="6" y="0" width="168" height="26" rx="4" stroke="currentColor" stroke-width="1.5" />
+        </g>
+      </g>
+    )
+  }
+  {
+    slug === "analytics-dashboard-rebuild" && (
+      <g>
+        <path d="M4 66h172" stroke="currentColor" stroke-opacity="0.25" />
+        {bars.map((b, i) => (
+          <rect
+            class="bar"
+            x={10 + i * 24}
+            y={66 - 58 * b}
+            width="14"
+            height={58 * b}
+            rx="2"
+            fill="currentColor"
+            fill-opacity={0.25 + (i % 3) * 0.2}
+            style={`animation-delay:${(i * 0.25).toFixed(2)}s`}
+          />
+        ))}
+        <path d="M17 40 41 26l24 18 24-28 24 14 24-10 24 6" stroke="currentColor" stroke-width="1.5" />
+      </g>
+    )
+  }
+  {
+    slug === "pyte-secure-computation" && (
+      <g>
+        <rect x="70" y="14" width="40" height="44" rx="8" stroke="currentColor" stroke-width="1.5" />
+        <path d="M82 30v-5a8 8 0 0 1 16 0v5" stroke="currentColor" stroke-width="1.5" />
+        <rect x="80" y="30" width="20" height="16" rx="3" fill="currentColor" fill-opacity="0.5" />
+        <path d="M10 26h160M10 46h160" stroke="currentColor" stroke-opacity="0.2" stroke-dasharray="3 4" />
+        {[0, 1, 2].map((i) => (
+          <>
+            <circle class="packet" cx="12" cy="26" r="3" fill="currentColor" style={`animation-delay:${i * 1.05}s`} />
+            <circle class="packet" cx="12" cy="46" r="3" fill="currentColor" fill-opacity="0.6" style={`animation-delay:${0.5 + i * 1.05}s`} />
+          </>
+        ))}
+      </g>
+    )
+  }
+</svg>

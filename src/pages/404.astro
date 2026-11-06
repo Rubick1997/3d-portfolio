@@ -1,0 +1,13 @@
+---
+import Base from "@/layouts/Base.astro";
+import PageHeader from "@/components/PageHeader.astro";
+---
+
+<Base title="Not found" path="/404">
+  <PageHeader />
+  <main id="content" class="mx-auto max-w-3xl px-4 py-24 sm:px-6">
+    <p class="font-mono text-xs uppercase tracking-wide text-subtle">404</p>
+    <h1 class="mt-2 text-3xl font-semibold tracking-tight">This page doesn’t exist.</h1>
+    <p class="mt-4 text-muted"><a href="/" class="link">Go to the home page</a></p>
+  </main>
+</Base>

@@ -1,0 +1,385 @@
+@import "tailwindcss";
+@import "@fontsource/ibm-plex-sans/300.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+/* Design tokens: color, type, space, radius. Same shape as the shared token library
+   I have built before. Change a token here, and every component follows. */
+:root {
+  --color-bg: #f7f9fc;
+  --color-surface: #ffffff;
+  --color-text: #141820;
+  --color-muted: #4a5361;
+  --color-subtle: #6b7280;
+  --color-border: #dde2ea;
+  --color-accent: #a8431a;
+  --color-accent-soft: #f6e6dd;
+  --color-focus: #a8431a;
+  --color-amber: #b7791f;
+  --color-rose: #b83a5e;
+  --glow: rgb(168 67 26 / 0.10);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #0e1116;
+    --color-surface: #151a21;
+    --color-text: #e7e9ec;
+    --color-muted: #a3acb8;
+    --color-subtle: #8a94a1;
+    --color-border: #262d37;
+    --color-accent: #f0905f;
+    --color-accent-soft: #2a1d17;
+    --color-focus: #f0905f;
+    --color-amber: #f5c26b;
+    --color-rose: #ef7a9b;
+    --glow: rgb(240 144 95 / 0.10);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #0e1116;
+  --color-surface: #151a21;
+  --color-text: #e7e9ec;
+  --color-muted: #a3acb8;
+  --color-subtle: #8a94a1;
+  --color-border: #262d37;
+  --color-accent: #f0905f;
+  --color-accent-soft: #2a1d17;
+  --color-focus: #f0905f;
+  --color-amber: #f5c26b;
+  --color-rose: #ef7a9b;
+  --glow: rgb(240 144 95 / 0.10);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-text: var(--color-text);
+  --color-muted: var(--color-muted);
+  --color-subtle: var(--color-subtle);
+  --color-border: var(--color-border);
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-amber: var(--color-amber);
+  --color-rose: var(--color-rose);
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  --radius-card: 0.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Anchor targets clear the mobile sticky header. */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+@media (min-width: 1024px) {
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+}
+
+.link {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-border);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms, color 150ms;
+}
+.link:hover {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent);
+}
+
+/* Long-form article typography (blog posts). */
+.prose {
+  color: var(--color-muted);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.prose > * + * {
+  margin-top: 1.25em;
+}
+.prose h2 {
+  margin-top: 2.5em;
+  color: var(--color-text);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.prose h3 {
+  margin-top: 2em;
+  color: var(--color-text);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: 0.75em;
+}
+.prose a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 3px;
+}
+.prose a:hover {
+  color: var(--color-accent);
+}
+.prose strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose li + li {
+  margin-top: 0.4em;
+}
+.prose li::marker {
+  color: var(--color-subtle);
+}
+.prose blockquote {
+  border-left: 2px solid var(--color-accent);
+  padding-left: 1.1em;
+  color: var(--color-text);
+}
+.prose img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  margin-top: 2em;
+}
+.prose img + em,
+.prose p:has(> img) + p > em:only-child {
+  display: block;
+  margin-top: -0.5em;
+  font-size: 0.875rem;
+  color: var(--color-subtle);
+  text-align: center;
+}
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+.prose pre {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  overflow-x: auto;
+}
+.prose hr {
+  border-color: var(--color-border);
+  margin: 2.5em 0;
+}
+
+/* Shiki dual theme: pick the variable set that matches the active theme. */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+:root[data-theme="dark"] .astro-code,
+:root[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .astro-code,
+  :root:not([data-theme="light"]) .astro-code span {
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+  }
+}
+
+/* ---------- Visual layer ---------- */
+
+/* Soft ambient glow at the top of every page. */
+body {
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, var(--glow), transparent 70%),
+    radial-gradient(40rem 30rem at -10% 10%, color-mix(in srgb, var(--color-rose) 6%, transparent), transparent 70%),
+    var(--color-bg);
+  background-attachment: fixed;
+}
+
+/* Gradient text for one emphasised phrase. */
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-accent), var(--color-amber) 55%, var(--color-rose));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* The dark hero panel is dark in both themes. */
+.hero-panel {
+  --hp-text: #eef0f3;
+  --hp-muted: #b4bcc7;
+  --hp-subtle: #8a94a1;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgb(240 144 95 / 0.22), transparent 55%),
+    radial-gradient(90% 80% at 100% 100%, rgb(239 122 155 / 0.16), transparent 60%),
+    #0b0e13;
+  color: var(--hp-text);
+  box-shadow: 0 30px 80px -40px rgb(11 14 19 / 0.6), inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+.hero-panel canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
+}
+.hero-panel .hp-muted { color: var(--hp-muted); }
+.hero-panel .hp-subtle { color: var(--hp-subtle); }
+.hero-panel .text-gradient {
+  background-image: linear-gradient(100deg, #f0905f, #f5c26b 55%, #ef7a9b);
+}
+
+/* Cards with a glow that follows the pointer (set by --mx/--my). */
+.glow-card {
+  position: relative;
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  border-radius: 1rem;
+  transition: border-color 200ms, transform 200ms, box-shadow 200ms;
+}
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 0%), var(--color-accent), transparent 45%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 250ms;
+  pointer-events: none;
+}
+.glow-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(28rem circle at var(--mx, 50%) var(--my, 0%), var(--glow), transparent 50%);
+  opacity: 0;
+  transition: opacity 250ms;
+  pointer-events: none;
+}
+.glow-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 50px -30px rgb(0 0 0 / 0.35);
+}
+.glow-card:hover::before,
+.glow-card:hover::after,
+.glow-card:focus-within::before {
+  opacity: 1;
+}
+
+/* Big, light numerals. */
+.stat-num {
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reveal on scroll. Only when JS is running, so content never stays hidden. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms cubic-bezier(.2,.7,.2,1), transform 700ms cubic-bezier(.2,.7,.2,1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Section nav: active state set from scroll position. */
+.rail-link[aria-current="true"] { color: #fff; }
+.rail-link[aria-current="true"] .rail-line { width: 3.5rem; background: #f0905f; }
+
+/* Project illustrations (pure SVG + CSS). */
+.viz { color: var(--color-accent); }
+.viz .cell { fill: currentColor; opacity: 0.12; animation: viz-cell 4.8s infinite; }
+@keyframes viz-cell { 0%, 8% { opacity: 0.12 } 18%, 70% { opacity: 0.9 } 85%, 100% { opacity: 0.12 } }
+.viz .crop { animation: viz-crop 5s ease-in-out infinite alternate; }
+@keyframes viz-crop { from { transform: translateY(34px) } to { transform: translateY(6px) } }
+.viz .bar { transform-box: fill-box; transform-origin: bottom; animation: viz-bar 3.6s ease-in-out infinite alternate; }
+@keyframes viz-bar { from { transform: scaleY(0.35) } to { transform: scaleY(1) } }
+.viz .packet { animation: viz-packet 3.2s linear infinite; }
+@keyframes viz-packet { from { transform: translateX(0); opacity: 0 } 10% { opacity: 1 } 90% { opacity: 1 } to { transform: translateX(150px); opacity: 0 } }
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1; transform: none; }
+  .viz * { animation: none !important; }
+  .viz .cell { opacity: 0.6; }
+}
+
+.hero-panel .text-muted { color: var(--hp-muted); }
+.hero-panel .text-muted:hover { color: #f0905f; }

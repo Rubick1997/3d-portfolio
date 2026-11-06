@@ -1,0 +1,48 @@
+---
+import Base from "@/layouts/Base.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import Colophon from "@/components/Colophon.astro";
+import Arrow from "@/components/Arrow.astro";
+import { fmtDate, getPosts, postUrl, readingTime } from "@/lib/posts";
+import { breadcrumbs } from "@/lib/jsonld";
+
+const posts = await getPosts();
+---
+
+<Base
+  title="Writing"
+  description="Code-heavy write-ups on LLM pipelines, AI product engineering and frontend systems, by Rustam Kolumbayev."
+  path="/blog"
+  jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Writing", path: "/blog" }])]}
+>
+  <PageHeader />
+  <main id="content" class="mx-auto max-w-3xl px-4 pb-16 pt-12 sm:px-6 sm:pt-16">
+    <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">Writing</h1>
+    <p class="mt-4 max-w-prose text-muted">
+      I write up my projects so other engineers can reuse them. Subscribe via <a href="/feed.xml" class="link">RSS</a>.
+    </p>
+    <ul class="mt-12 space-y-10">
+      {
+        posts.map((p) => (
+          <li class="grid gap-1 sm:grid-cols-[8.5rem_1fr] sm:gap-6">
+            <time datetime={p.data.date.toISOString()} class="pt-1 font-mono text-xs uppercase tracking-wide text-subtle">
+              {fmtDate(p.data.date)}
+            </time>
+            <div>
+              <a href={postUrl(p)} class="group">
+                <h2 class="font-medium leading-snug group-hover:text-accent">
+                  {p.data.title} <Arrow />
+                </h2>
+              </a>
+              {p.data.subtitle && <p class="mt-1 text-sm text-muted">{p.data.subtitle}</p>}
+              <p class="mt-2 font-mono text-xs text-subtle">
+                {readingTime(p)} read{p.data.series ? ` · ${p.data.series}, part ${p.data.seriesPart}` : ""}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <Colophon />
+  </main>
+</Base>

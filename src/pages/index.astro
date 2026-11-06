@@ -1,0 +1,273 @@
+---
+import { Image } from "astro:assets";
+import Base from "@/layouts/Base.astro";
+import SocialLinks from "@/components/SocialLinks.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Tags from "@/components/Tags.astro";
+import Arrow from "@/components/Arrow.astro";
+import ResumeLink from "@/components/ResumeLink.astro";
+import Colophon from "@/components/Colophon.astro";
+import ProjectViz from "@/components/ProjectViz.astro";
+import { experience, links, profile, proofStats } from "@/data/profile";
+import { moreWork, work } from "@/data/work";
+import { fmtDate, getPosts, postUrl, readingTime } from "@/lib/posts";
+import { profileGraph } from "@/lib/jsonld";
+import { headshot, headshotSquare } from "@/lib/headshot";
+
+const nav = [
+  { href: "#about", label: "About" },
+  { href: "#work", label: "Work" },
+  { href: "#experience", label: "Experience" },
+  { href: "#writing", label: "Writing" },
+  { href: "#contact", label: "Contact" },
+];
+
+const posts = (await getPosts()).slice(0, 4);
+const featured = work.filter((w) => w.featured);
+const secondary = work.filter((w) => !w.featured);
+const square = await headshotSquare();
+const personImage = new URL(square.src, Astro.site).href;
+
+// Split the positioning line so its last clause can carry the gradient.
+const [lead, emphasis] = profile.positioning.split(/,? and I (?=make sure)/);
+---
+
+<Base path="/" jsonLd={[profileGraph("/", personImage)]}>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:flex lg:justify-between lg:gap-14 lg:px-8">
+    <header class="pt-4 sm:pt-6 lg:sticky lg:top-0 lg:h-screen lg:w-[44%] lg:shrink-0 lg:py-6">
+      <div class="hero-panel flex h-full flex-col justify-between p-6 sm:p-8 lg:overflow-y-auto lg:p-10">
+        <canvas data-flow></canvas>
+        <div>
+          <div class="flex items-center gap-4">
+            <Image
+              src={headshot}
+              alt="Rustam Kolumbayev"
+              width={80}
+              height={80}
+              densities={[1, 2]}
+              loading="eager"
+              fetchpriority="high"
+              class="h-16 w-16 rounded-full object-cover ring-2 ring-white/15 sm:h-20 sm:w-20"
+            />
+            <p class="hp-subtle font-mono text-xs uppercase tracking-[0.18em]">
+              <span class="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_2px_rgba(52,211,153,.6)]"></span>
+              Open to roles · {profile.location}
+            </p>
+          </div>
+
+          <h1 class="mt-8 text-4xl font-semibold tracking-tight sm:text-5xl">{profile.name}</h1>
+          <p class="mt-2 text-lg font-medium">{profile.role}</p>
+          <p class="hp-muted mt-5 max-w-md text-lg leading-relaxed">
+            {lead}, and I <span class="text-gradient font-medium">{emphasis}</span>
+          </p>
+
+          <nav aria-label="Sections" class="mt-10 hidden lg:block">
+            <ul class="space-y-3">
+              {
+                nav.map((n) => (
+                  <li>
+                    <a
+                      href={n.href}
+                      class="rail-link group flex items-center gap-4 font-mono text-xs uppercase tracking-[0.18em] text-[var(--hp-subtle)] transition-colors hover:text-white"
+                    >
+                      <span class="rail-line h-px w-8 bg-white/25 transition-all group-hover:w-14 group-hover:bg-[#f0905f]" />
+                      {n.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </div>
+
+        <div class="mt-10 flex flex-wrap items-center gap-x-4 gap-y-3">
+          <a
+            href={`mailto:${links.email}`}
+            class="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#0b0e13] transition hover:bg-[#f5c26b]">Get in touch</a
+          >
+          {
+            links.resume && (
+              <a
+                href={links.resume}
+                class="rounded-full px-4 py-2 text-sm font-medium text-white ring-1 ring-white/25 transition hover:ring-white/60">
+                Résumé
+              </a>
+            )
+          }
+          <SocialLinks class="ml-auto" />
+          <ThemeToggle />
+        </div>
+      </div>
+    </header>
+
+    <main id="content" class="pb-16 pt-14 lg:w-[56%] lg:py-20">
+      <section aria-label="Proof in numbers" class="mb-20">
+        <ul class="grid grid-cols-2 sm:grid-cols-4">
+          {
+            proofStats.map((s, i) => (
+              <li
+                class:list={[
+                  i > 0 && "sm:border-l sm:border-border",
+                  i % 2 === 1 && "max-sm:border-l max-sm:border-border",
+                ]}
+              >
+                <a href={s.href} class:list={["group block py-4 pr-4", i === 0 ? "sm:pl-0" : "sm:pl-5", i % 2 === 1 && "max-sm:pl-4"]}>
+                  <span class="stat-num block text-4xl text-text transition-colors group-hover:text-accent sm:text-[2.6rem]">{s.value}</span>
+                  <span class="mt-2 block text-xs leading-snug text-subtle">{s.label}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section id="about" aria-labelledby="about-heading" class="mb-24">
+        <SectionHeading id="about">About</SectionHeading>
+        <div class="space-y-4 text-muted">
+          <p class="text-xl leading-relaxed text-text">{profile.shortBio}</p>
+          <p>
+            At work I own three products end to end: a consumer recommendations site, an enterprise analytics dashboard
+            and a company website. Through Mercor, I write the tasks and rubrics frontier labs use to grade coding
+            agents.
+          </p>
+          <p><a href="/about" class="link group">More about how I work <Arrow /></a></p>
+        </div>
+      </section>
+
+      <section id="work" aria-labelledby="work-heading" class="mb-24">
+        <SectionHeading id="work">Selected work</SectionHeading>
+        <ul class="grid gap-5">
+          {
+            featured.map((w, i) => (
+              <li data-reveal style={`--reveal-delay:${i * 60}ms`}>
+                <a href={`/work/${w.slug}`} class="glow-card group block overflow-hidden p-6 sm:p-7">
+                  <div class="relative z-10 grid gap-6 sm:grid-cols-[1fr_11rem] sm:items-center">
+                    <div>
+                      <p class="font-mono text-xs uppercase tracking-wide text-subtle">
+                        {w.org} · {w.kicker}
+                      </p>
+                      <h3 class="mt-2 text-lg font-medium leading-snug transition-colors group-hover:text-accent">
+                        {w.title} <Arrow />
+                      </h3>
+                      <p class="mt-2 text-sm text-muted">{w.summary}</p>
+                    </div>
+                    <ProjectViz slug={w.slug} class="max-sm:max-w-56" />
+                  </div>
+                  <dl class="relative z-10 mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-border pt-5 sm:grid-cols-4">
+                    {w.metrics.map((m) => (
+                      <div>
+                        <dt class="sr-only">{m.label}</dt>
+                        <dd class="font-mono text-sm font-medium text-text">{m.value}</dd>
+                        <dd class="mt-0.5 text-xs leading-snug text-subtle">{m.label}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h3 class="mb-4 mt-14 font-medium">More work</h3>
+        <ul class="divide-y divide-border border-y border-border text-sm" data-reveal>
+          {
+            secondary.map((w) => (
+              <li class="py-4">
+                <a href={`/work/${w.slug}`} class="link group font-medium">
+                  {w.title} <Arrow />
+                </a>
+                <p class="mt-1 text-muted">{w.summary}</p>
+              </li>
+            ))
+          }
+          {
+            moreWork.map((m) => (
+              <li class="py-4">
+                <p class="font-medium">{m.title}</p>
+                <p class="mt-1 text-muted">{m.body}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section id="experience" aria-labelledby="experience-heading" class="mb-24">
+        <SectionHeading id="experience">Experience</SectionHeading>
+        <ol class="relative space-y-12 border-l border-border pl-6 sm:border-l-0 sm:pl-0">
+          {
+            experience.map((r) => (
+              <li class="relative grid gap-2 sm:grid-cols-[8.5rem_1fr] sm:gap-6" data-reveal>
+                <span class="absolute -left-[1.85rem] top-1.5 h-2.5 w-2.5 rounded-full bg-accent ring-4 ring-bg sm:hidden" />
+                <p class="pt-1 font-mono text-xs uppercase tracking-wide text-subtle">{r.period}</p>
+                <div>
+                  <h3 class="font-medium leading-snug">
+                    {r.title} · {r.org}
+                    {r.orgNote && <span class="font-normal text-subtle"> ({r.orgNote})</span>}
+                  </h3>
+                  <p class="mt-2 text-muted">{r.summary}</p>
+                  <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-muted marker:text-border">
+                    {r.bullets.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                  {r.work && (
+                    <a href={`/work/${r.work}`} class="link group mt-2 inline-block text-sm">
+                      Case study <Arrow />
+                    </a>
+                  )}
+                  <Tags items={r.tags} />
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <ResumeLink class="mt-10 inline-block" />
+      </section>
+
+      <section id="writing" aria-labelledby="writing-heading" class="mb-24">
+        <SectionHeading id="writing">Writing</SectionHeading>
+        <ul class="grid gap-4 sm:grid-cols-2">
+          {
+            posts.map((p, i) => (
+              <li data-reveal style={`--reveal-delay:${i * 60}ms`}>
+                <a href={postUrl(p)} class="glow-card group flex h-full flex-col p-5">
+                  <time datetime={p.data.date.toISOString()} class="relative z-10 font-mono text-xs uppercase tracking-wide text-subtle">
+                    {fmtDate(p.data.date)} · {readingTime(p)} read
+                  </time>
+                  <h3 class="relative z-10 mt-2 font-medium leading-snug transition-colors group-hover:text-accent">{p.data.title}</h3>
+                  {p.data.series && (
+                    <p class="relative z-10 mt-auto pt-3 font-mono text-xs text-accent">
+                      {p.data.series} · part {p.data.seriesPart}
+                    </p>
+                  )}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a href="/blog" class="link group mt-8 inline-block text-sm">All writing <Arrow /></a>
+      </section>
+
+      <section id="contact" aria-labelledby="contact-heading" data-reveal>
+        <SectionHeading id="contact">Contact</SectionHeading>
+        <div class="hero-panel p-8 sm:p-10">
+          <canvas data-flow></canvas>
+          <p class="text-3xl font-semibold tracking-tight sm:text-4xl">
+            <span class="text-gradient">{profile.cta.heading}.</span>
+          </p>
+          <p class="hp-muted mt-4 max-w-xl">{profile.cta.body}</p>
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href={`mailto:${links.email}`}
+              class="rounded-full bg-white px-5 py-2.5 text-sm font-medium text-[#0b0e13] transition hover:bg-[#f5c26b]">{links.email}</a
+            >
+            <a href={links.linkedin} target="_blank" rel="noreferrer me" class="rounded-full px-5 py-2.5 text-sm font-medium text-white ring-1 ring-white/25 transition hover:ring-white/60">LinkedIn</a>
+          </div>
+        </div>
+      </section>
+
+      <Colophon />
+    </main>
+  </div>
+</Base>

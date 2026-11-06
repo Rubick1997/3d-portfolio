@@ -1,0 +1,111 @@
+---
+import Base from "@/layouts/Base.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import Arrow from "@/components/Arrow.astro";
+import ResumeLink from "@/components/ResumeLink.astro";
+import Colophon from "@/components/Colophon.astro";
+import { education, links, principles, profile } from "@/data/profile";
+import { profileGraph } from "@/lib/jsonld";
+import { headshotSquare } from "@/lib/headshot";
+
+const square = await headshotSquare();
+const personImage = new URL(square.src, Astro.site).href;
+---
+
+<Base
+  title="About"
+  description="Rustam Kolumbayev is a Seattle AI product engineer with seven years of experience who builds AI features end to end and verifies the AI is right."
+  path="/about"
+  ogType="profile"
+  jsonLd={[profileGraph("/about", personImage)]}
+>
+  <PageHeader />
+  <main id="content" class="mx-auto max-w-3xl px-4 pb-16 pt-12 sm:px-6 sm:pt-16">
+        <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">About</h1>
+        <div class="mt-6 max-w-prose space-y-4 text-[1.0625rem] text-muted">
+          {profile.longBio.map((p) => <p>{p}</p>)}
+        </div>
+
+        <section aria-labelledby="pillars" class="mt-16">
+          <h2 id="pillars" class="font-mono text-xs font-medium uppercase tracking-[0.18em] text-subtle">
+            What I do
+          </h2>
+          <ul class="mt-4 space-y-2 text-lg font-medium">
+            {profile.pillars.map((p) => <li>{p}</li>)}
+          </ul>
+        </section>
+
+        <section aria-labelledby="principles" class="mt-16">
+          <h2 id="principles" class="font-mono text-xs font-medium uppercase tracking-[0.18em] text-subtle">
+            Principles, with proof
+          </h2>
+          <ol class="mt-6 grid gap-4 sm:grid-cols-2">
+            {principles.map((p, i) => (
+              <li class="rounded-[var(--radius-card)] border border-border bg-surface p-5">
+                <p class="font-mono text-xs text-accent">0{i + 1}</p>
+                <h3 class="mt-1 font-medium">{p.title}</h3>
+                <p class="mt-2 text-sm text-muted">{p.body}</p>
+                <a href={p.proof.href} class="link group mt-3 inline-block text-sm">
+                  {p.proof.label} <Arrow />
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section aria-labelledby="how" class="mt-16">
+          <h2 id="how" class="font-mono text-xs font-medium uppercase tracking-[0.18em] text-subtle">
+            How I work
+          </h2>
+          <div class="mt-4 max-w-prose space-y-4 text-muted">
+            <p>
+              I confirm requirements in writing before I build, and I post progress updates without waiting to be
+              asked.
+            </p>
+            <p>
+              Design for wrong answers, not just errors. AI should never block the user, and it should show where
+              an answer came from, so users can check the text.
+            </p>
+            <p>
+              Coding agents are how I took over work that used to need several contractors. My most-used agent
+              commands are mapped to a Logitech MX Keypad, so common workflows are one keypress away.
+            </p>
+            <p>
+              I got into AI evaluation because friends at NVIDIA and OpenAI kept talking about how models are
+              trained and evaluated. I went through Andrej Karpathy’s lectures, then joined Mercor.
+            </p>
+          </div>
+        </section>
+
+        <section aria-labelledby="edu" class="mt-16">
+          <h2 id="edu" class="font-mono text-xs font-medium uppercase tracking-[0.18em] text-subtle">
+            Education
+          </h2>
+          <ul class="mt-4 divide-y divide-border border-y border-border">
+            {education.map((e) => (
+              <li class="flex flex-wrap items-baseline justify-between gap-2 py-3">
+                <span>
+                  {e.name} <span class="text-subtle">· {e.org}</span>
+                </span>
+                <span class="font-mono text-xs text-subtle">{e.year}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section aria-labelledby="contact" class="mt-16">
+          <h2 id="contact" class="font-mono text-xs font-medium uppercase tracking-[0.18em] text-subtle">
+            Contact
+          </h2>
+          <p class="mt-4 max-w-prose text-muted">{profile.cta.body}</p>
+          <p class="mt-4 flex flex-wrap gap-6">
+            <a href={`mailto:${links.email}`} class="link font-mono text-sm">
+              {links.email}
+            </a>
+            <ResumeLink class="text-sm" />
+          </p>
+        </section>
+
+        <Colophon />
+      </main>
+</Base>
