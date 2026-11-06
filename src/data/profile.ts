@@ -15,8 +15,6 @@ export const profile = {
   role: "AI Product Engineer",
   positioning:
     "I build AI features end to end, from the data and the model to the screen people use, and I make sure the AI is actually right.",
-  subline:
-    "Senior engineer owning a consumer recommendations site, an enterprise analytics dashboard and a company website. Seattle.",
   now: "Building production AI features and grading frontier coding agents for Mercor.",
   shortBio:
     "I'm an AI product engineer with seven years of experience. I own features end to end, from the data and the backend to the screen the user actually touches, and more and more of that work involves AI.",
