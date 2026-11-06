@@ -9,5 +9,9 @@ export default defineConfig({
   trailingSlash: "never",
   build: { format: "file" },
   integrations: [mdx(), sitemap({ filter: (page) => !page.includes("/404") })],
+  markdown: {
+    // Code is highlighted at build time; no client JS. Colours follow the site theme via CSS vars.
+    shikiConfig: { themes: { light: "github-light", dark: "github-dark" }, defaultColor: false },
+  },
   vite: { plugins: [tailwindcss()] },
 });

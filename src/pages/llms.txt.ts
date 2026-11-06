@@ -1,10 +1,11 @@
 import { links, profile, site } from "@/data/profile";
 import { work } from "@/data/work";
-import { posts } from "@/data/posts";
+import { getPosts, postUrl } from "@/lib/posts";
 
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = () => {
+export const GET: APIRoute = async () => {
+  const posts = await getPosts();
   const body = [
     `# ${profile.name}`,
     "",
@@ -16,7 +17,7 @@ export const GET: APIRoute = () => {
     ...work.map((w) => `- [${w.title}](${site.url}/work/${w.slug}): ${w.summary}`),
     "",
     "## Writing",
-    ...posts.map((p) => `- [${p.title}](${p.mediumUrl}) (${p.date})`),
+    ...posts.map((p) => `- [${p.data.title}](${site.url}${postUrl(p)}): ${p.data.description}`),
     "",
     "## Contact",
     `- Email: ${links.email}`,

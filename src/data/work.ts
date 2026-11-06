@@ -72,7 +72,7 @@ export const work: CaseStudy[] = [
     ],
     lesson: "If you can list every input, generate and check the answers ahead of time.",
     stack: ["Claude Opus (Batch API)", "Jev", "Static files on CDN", "Next.js", "TypeScript"],
-    related: [{ title: "Treat LLM Output as a Build Artifact: Batch APIs and Jev", href: "https://medium.com/@vinch1910/treat-llm-output-as-a-build-artifact-batch-apis-and-jev-2aa0029befbe" }],
+    related: [{ title: "Treat LLM Output as a Build Artifact: Batch APIs and Jev", href: "/blog/treat-llm-output-as-a-build-artifact" }],
   },
   {
     slug: "tastedive-hero-banners",
@@ -120,8 +120,8 @@ export const work: CaseStudy[] = [
     ],
     stack: ["Node.js", "TensorFlow.js (WASM)", "Next.js SSR", "CSS object-position"],
     related: [
-      { title: "Stop Cutting Heads Off Your Hero Images (Part 1 of 2)", href: "https://medium.com/@vinch1910/stop-cutting-heads-off-your-hero-images-part-1-of-2-58ec753affcc" },
-      { title: "Finding the Focal Point: Faces, Then People, Then Saliency (Part 2 of 2)", href: "https://medium.com/@vinch1910/finding-the-focal-point-faces-then-people-then-saliency-part-2-of-2-0bbd51804180" },
+      { title: "Stop Cutting Heads Off Your Hero Images (Part 1 of 2)", href: "/blog/stop-cutting-heads-off-your-hero-images" },
+      { title: "Finding the Focal Point: Faces, Then People, Then Saliency (Part 2 of 2)", href: "/blog/finding-the-focal-point" },
     ],
   },
   {

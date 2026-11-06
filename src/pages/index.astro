@@ -10,7 +10,7 @@ import ResumeLink from "@/components/ResumeLink.astro";
 import Colophon from "@/components/Colophon.astro";
 import { experience, links, profile } from "@/data/profile";
 import { moreWork, work } from "@/data/work";
-import { postHref, posts } from "@/data/posts";
+import { fmtDate, getPosts, postUrl, readingTime } from "@/lib/posts";
 import { profileGraph } from "@/lib/jsonld";
 import { headshot, headshotSquare } from "@/lib/headshot";
 
@@ -22,9 +22,7 @@ const nav = [
   { href: "#contact", label: "Contact" },
 ];
 
-const fmtDate = (iso: string) =>
-  new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
-
+const posts = (await getPosts()).slice(0, 4);
 const featured = work.filter((w) => w.featured);
 const secondary = work.filter((w) => !w.featured);
 const square = await headshotSquare();
@@ -186,26 +184,24 @@ const personImage = new URL(square.src, Astro.site).href;
         <SectionHeading id="writing">Writing</SectionHeading>
         <ul class="space-y-6">
           {
-            posts.slice(0, 4).map((p) => (
+            posts.map((p) => (
               <li class="grid gap-1 sm:grid-cols-[8.5rem_1fr] sm:gap-6">
-                <time datetime={p.date} class="pt-0.5 font-mono text-xs uppercase tracking-wide text-subtle">
-                  {fmtDate(p.date)}
+                <time datetime={p.data.date.toISOString()} class="pt-0.5 font-mono text-xs uppercase tracking-wide text-subtle">
+                  {fmtDate(p.data.date)}
                 </time>
                 <div>
-                  <a href={postHref(p)} class="link group font-medium leading-snug" target="_blank" rel="noreferrer">
-                    {p.title} <Arrow />
+                  <a href={postUrl(p)} class="link group font-medium leading-snug">
+                    {p.data.title} <Arrow />
                   </a>
                   <p class="mt-1 font-mono text-xs text-subtle">
-                    {p.readingTime} read{p.series ? ` · Series: ${p.series}` : ""}
+                    {readingTime(p)} read{p.data.series ? ` · ${p.data.series}, part ${p.data.seriesPart}` : ""}
                   </p>
                 </div>
               </li>
             ))
           }
         </ul>
-        <a href={links.medium} class="link group mt-8 inline-block text-sm" target="_blank" rel="noreferrer me">
-          All writing on Medium <Arrow />
-        </a>
+        <a href="/blog" class="link group mt-8 inline-block text-sm">All writing <Arrow /></a>
       </section>
 
       <section id="contact" aria-labelledby="contact-heading">

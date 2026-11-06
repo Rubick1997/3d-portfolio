@@ -1,0 +1,172 @@
+---
+import type { GetStaticPaths } from "astro";
+import { render } from "astro:content";
+import Base from "@/layouts/Base.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import Colophon from "@/components/Colophon.astro";
+import ContactCard from "@/components/ContactCard.astro";
+import Arrow from "@/components/Arrow.astro";
+import { getWork } from "@/data/work";
+import { site } from "@/data/profile";
+import { fmtDate, getPosts, postUrl, readingTime, type Post } from "@/lib/posts";
+import { breadcrumbs, personId } from "@/lib/jsonld";
+
+export const getStaticPaths = (async () => {
+  const posts = await getPosts();
+  return posts.map((p) => ({ params: { slug: p.id }, props: { post: p, all: posts } }));
+}) satisfies GetStaticPaths;
+
+const { post, all } = Astro.props as { post: Post; all: Post[] };
+const { Content, headings } = await render(post);
+const d = post.data;
+const url = `${site.url}${postUrl(post)}`;
+const ogImage = `/og/blog/${post.id}.png`;
+
+const series = d.series
+  ? all.filter((p) => p.data.series === d.series).sort((a, b) => (a.data.seriesPart ?? 0) - (b.data.seriesPart ?? 0))
+  : [];
+const work = d.relatedWork ? getWork(d.relatedWork) : undefined;
+const related = all
+  .filter((p) => p.id !== post.id && !series.includes(p))
+  .map((p) => ({ p, score: p.data.tags.filter((t) => d.tags.includes(t)).length }))
+  .sort((a, b) => b.score - a.score || b.p.data.date.getTime() - a.p.data.date.getTime())
+  .slice(0, 2)
+  .map((r) => r.p);
+
+const blogPosting = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": `${url}#article`,
+  mainEntityOfPage: url,
+  url,
+  headline: d.title,
+  description: d.description,
+  image: `${site.url}${ogImage}`,
+  datePublished: d.date.toISOString(),
+  dateModified: (d.updated ?? d.date).toISOString(),
+  author: { "@type": "Person", "@id": personId, name: site.name, url: `${site.url}/` },
+  publisher: { "@id": personId },
+  keywords: d.tags.join(", "),
+  inLanguage: "en-US",
+};
+const h2s = headings.filter((h) => h.depth === 2);
+---
+
+<Base
+  title={d.title}
+  description={d.description}
+  path={postUrl(post)}
+  ogImage={ogImage}
+  ogType="article"
+  jsonLd={[
+    blogPosting,
+    breadcrumbs([
+      { name: "Home", path: "/" },
+      { name: "Writing", path: "/blog" },
+      { name: d.title, path: postUrl(post) },
+    ]),
+  ]}
+>
+  <PageHeader />
+  <main id="content" class="mx-auto max-w-3xl px-4 pb-16 pt-12 sm:px-6 sm:pt-16">
+    <article>
+      <header>
+        <p class="font-mono text-xs uppercase tracking-wide text-subtle">
+          <time datetime={d.date.toISOString()}>{fmtDate(d.date)}</time> · {readingTime(post)} read
+        </p>
+        <h1 class="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{d.title}</h1>
+        {d.subtitle && <p class="mt-4 text-lg text-muted">{d.subtitle}</p>}
+      </header>
+
+      {
+        series.length > 1 && (
+          <nav aria-label="Series" class="mt-8 rounded-[var(--radius-card)] border border-border bg-surface p-5 text-sm">
+            <p class="font-mono text-xs uppercase tracking-wide text-subtle">Series · {d.series}</p>
+            <ol class="mt-3 space-y-1.5">
+              {series.map((s) => (
+                <li>
+                  {s.id === post.id ? (
+                    <span class="font-medium text-text" aria-current="page">
+                      Part {s.data.seriesPart}: {s.data.title}
+                    </span>
+                  ) : (
+                    <a href={postUrl(s)} class="link">
+                      Part {s.data.seriesPart}: {s.data.title}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+
+      {
+        h2s.length > 2 && (
+          <details class="mt-8 text-sm">
+            <summary class="cursor-pointer font-mono text-xs uppercase tracking-wide text-subtle hover:text-text">
+              Contents
+            </summary>
+            <ol class="mt-3 space-y-1.5 border-l border-border pl-4">
+              {h2s.map((h) => (
+                <li>
+                  <a href={`#${h.slug}`} class="text-muted hover:text-accent">
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </details>
+        )
+      }
+
+      <div class="prose mt-10">
+        <Content />
+      </div>
+    </article>
+
+    <footer class="mt-16 space-y-8 border-t border-border pt-8 text-sm">
+      {
+        work && (
+          <p>
+            <span class="font-mono text-xs uppercase tracking-wide text-subtle">The project behind this post</span>
+            <br />
+            <a href={`/work/${work.slug}`} class="link group mt-1 inline-block font-medium">
+              {work.title} <Arrow />
+            </a>
+          </p>
+        )
+      }
+      {
+        related.length > 0 && (
+          <div>
+            <p class="font-mono text-xs uppercase tracking-wide text-subtle">More writing</p>
+            <ul class="mt-2 space-y-1.5">
+              {related.map((r) => (
+                <li>
+                  <a href={postUrl(r)} class="link group">
+                    {r.data.title} <Arrow />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+      {
+        d.mediumUrl && (
+          <p class="text-subtle">
+            Also published on{" "}
+            <a href={d.mediumUrl} class="link" target="_blank" rel="noreferrer">
+              Medium
+            </a>
+            .
+          </p>
+        )
+      }
+    </footer>
+
+    <div class="mt-12"><ContactCard /></div>
+    <Colophon />
+  </main>
+</Base>
