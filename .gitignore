@@ -24,3 +24,11 @@ dist-ssr
 *.sw?
 .env.local
 .vercel
+
+# next
+.next
+next-env.d.ts
+*.tsbuildinfo
+
+# astro
+.astro

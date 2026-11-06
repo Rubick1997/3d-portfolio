@@ -1,0 +1,6 @@
+---
+interface Props { id: string }
+const { id } = Astro.props;
+---
+
+<h2 id={`${id}-heading`} class="mb-6 font-mono text-xs font-medium uppercase tracking-[0.18em] text-subtle"><slot /></h2>

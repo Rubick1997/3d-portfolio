@@ -1,0 +1,70 @@
+---
+import "@/styles/global.css";
+import { site } from "@/data/profile";
+import { serialize } from "@/lib/jsonld";
+
+interface Props {
+  title?: string;
+  description?: string;
+  path: string;
+  ogImage?: string;
+  ogType?: "website" | "article" | "profile";
+  jsonLd?: unknown[];
+}
+
+const { title, description = site.description, path, ogImage = "/og/home.png", ogType = "website", jsonLd = [] } = Astro.props;
+const fullTitle = title ? `${title} | Rustam Kolumbayev` : site.title;
+const canonical = new URL(path, site.url).href;
+const image = new URL(ogImage, site.url).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#f7f9fc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e1116" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title ?? site.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title ?? site.title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+
+    <script is:inline>
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    {jsonLd.map((d) => <script type="application/ld+json" set:html={serialize(d)} />)}
+  </head>
+  <body>
+    <a
+      href="#content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:text-text focus:shadow"
+      >Skip to content</a
+    >
+    <slot />
+    <script>
+      import "@/lib/theme";
+    </script>
+  </body>
+</html>

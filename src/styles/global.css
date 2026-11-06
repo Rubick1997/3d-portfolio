@@ -1,0 +1,121 @@
+@import "tailwindcss";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+/* Design tokens: color, type, space, radius. Same shape as the shared token library
+   used across Insights, TasteDive and qloo.com. Change a token here, and every component follows. */
+:root {
+  --color-bg: #f7f9fc;
+  --color-surface: #ffffff;
+  --color-text: #141820;
+  --color-muted: #4a5361;
+  --color-subtle: #6b7280;
+  --color-border: #dde2ea;
+  --color-accent: #a8431a;
+  --color-accent-soft: #f6e6dd;
+  --color-focus: #a8431a;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #0e1116;
+    --color-surface: #151a21;
+    --color-text: #e7e9ec;
+    --color-muted: #a3acb8;
+    --color-subtle: #8a94a1;
+    --color-border: #262d37;
+    --color-accent: #f0905f;
+    --color-accent-soft: #2a1d17;
+    --color-focus: #f0905f;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #0e1116;
+  --color-surface: #151a21;
+  --color-text: #e7e9ec;
+  --color-muted: #a3acb8;
+  --color-subtle: #8a94a1;
+  --color-border: #262d37;
+  --color-accent: #f0905f;
+  --color-accent-soft: #2a1d17;
+  --color-focus: #f0905f;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-text: var(--color-text);
+  --color-muted: var(--color-muted);
+  --color-subtle: var(--color-subtle);
+  --color-border: var(--color-border);
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  --radius-card: 0.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Anchor targets clear the mobile sticky header. */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+@media (min-width: 1024px) {
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+}
+
+.link {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-border);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms, color 150ms;
+}
+.link:hover {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent);
+}

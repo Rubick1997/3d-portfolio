@@ -1,0 +1,35 @@
+---
+import { links } from "@/data/profile";
+interface Props { class?: string }
+const { class: cls = "" } = Astro.props;
+const paths = {
+  linkedin: "M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11.5H3V9.75Zm6.5 0h3.84v1.57h.05c.53-1 1.84-2.07 3.79-2.07 4.05 0 4.82 2.67 4.82 6.13v5.87h-4v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75v5.29h-4V9.75Z",
+  github: "M12 1.5a10.5 10.5 0 0 0-3.32 20.46c.53.1.72-.23.72-.5v-1.8c-2.92.63-3.54-1.4-3.54-1.4-.48-1.22-1.17-1.54-1.17-1.54-.95-.65.08-.64.08-.64 1.05.08 1.6 1.08 1.6 1.08.94 1.6 2.46 1.14 3.06.87.1-.68.37-1.14.66-1.4-2.33-.27-4.78-1.17-4.78-5.18 0-1.15.41-2.08 1.08-2.82-.1-.27-.47-1.34.1-2.78 0 0 .88-.29 2.89 1.07a10 10 0 0 1 5.26 0c2-1.36 2.89-1.07 2.89-1.07.57 1.44.21 2.51.1 2.78.68.74 1.08 1.67 1.08 2.82 0 4.02-2.46 4.9-4.8 5.16.38.33.72.97.72 1.96v2.9c0 .28.19.61.73.5A10.5 10.5 0 0 0 12 1.5Z",
+  medium: "M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12Zm7.42 0c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42ZM24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12Z",
+  mail: "M3 5h18v14H3V5Zm1.5 1.5v.6l7.5 5.6 7.5-5.6v-.6h-15Zm15 2.5-7.5 5.6L4.5 9v8.5h15V9Z",
+};
+const items = [
+  { href: `mailto:${links.email}`, label: "Email", d: paths.mail },
+  { href: links.linkedin, label: "LinkedIn", d: paths.linkedin },
+  ...(links.showGithub ? [{ href: links.github, label: "GitHub", d: paths.github }] : []),
+  { href: links.medium, label: "Medium", d: paths.medium },
+];
+---
+
+<ul class:list={["flex items-center gap-1", cls]}>
+  {
+    items.map((i) => (
+      <li>
+        <a
+          href={i.href}
+          class="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted transition-colors hover:text-accent"
+          {...(i.href.startsWith("http") ? { target: "_blank", rel: "noreferrer me" } : {})}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label={i.label}>
+            <path d={i.d} />
+          </svg>
+        </a>
+      </li>
+    ))
+  }
+</ul>

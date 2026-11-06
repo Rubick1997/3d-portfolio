@@ -1,0 +1,9 @@
+---
+import { links, profile } from "@/data/profile";
+---
+
+<aside class="rounded-[var(--radius-card)] border border-border bg-surface p-6">
+  <p class="font-medium">{profile.cta.heading}.</p>
+  <p class="mt-2 text-sm text-muted">{profile.cta.body}</p>
+  <a href={`mailto:${links.email}`} class="link mt-4 inline-block font-mono text-sm">{links.email}</a>
+</aside>

@@ -1,0 +1,141 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "@/layouts/Base.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import Tags from "@/components/Tags.astro";
+import Arrow from "@/components/Arrow.astro";
+import ContactCard from "@/components/ContactCard.astro";
+import Colophon from "@/components/Colophon.astro";
+import { work, type CaseStudy } from "@/data/work";
+import { breadcrumbs } from "@/lib/jsonld";
+
+export const getStaticPaths = (() => work.map((w) => ({ params: { slug: w.slug }, props: { w } }))) satisfies GetStaticPaths;
+
+const { w } = Astro.props as { w: CaseStudy };
+const next = work[(work.indexOf(w) + 1) % work.length];
+
+const blocks: [string, string[] | undefined][] = [
+  ["Problem", w.problem],
+  ["Constraints", w.constraints],
+  ["Approach", w.approach],
+];
+const after: [string, string[] | undefined][] = [
+  ["Results", w.results],
+  ["What went wrong", w.failures],
+  ["What I'd do differently", w.differently],
+];
+const h2 = "font-mono text-xs font-medium uppercase tracking-[0.18em] text-subtle";
+---
+
+<Base
+  title={w.title}
+  description={w.summary}
+  path={`/work/${w.slug}`}
+  ogImage={`/og/work/${w.slug}.png`}
+  ogType="article"
+  jsonLd={[
+    breadcrumbs([
+      { name: "Home", path: "/" },
+      { name: "Work", path: "/#work" },
+      { name: w.title, path: `/work/${w.slug}` },
+    ]),
+  ]}
+>
+  <PageHeader />
+  <main id="content" class="mx-auto max-w-3xl px-4 pb-16 pt-12 sm:px-6 sm:pt-16">
+    <article>
+      <p class="font-mono text-xs uppercase tracking-wide text-subtle">{w.org} · {w.kicker}</p>
+      <h1 class="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{w.title}</h1>
+      <p class="mt-4 text-lg text-muted">{w.summary}</p>
+
+      {
+        w.metrics.length > 0 && (
+          <dl class="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--radius-card)] border border-border bg-border sm:grid-cols-4">
+            {w.metrics.map((m) => (
+              <div class="bg-surface p-4">
+                <dt class="sr-only">{m.label}</dt>
+                <dd class="font-mono text-base font-medium sm:whitespace-nowrap">{m.value}</dd>
+                <dd class="mt-1 text-xs leading-snug text-subtle">{m.label}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+
+      <div class="text-[1.0625rem] text-muted [&_p]:max-w-prose">
+        {
+          blocks.map(
+            ([title, items]) =>
+              items?.length && (
+                <section class="mt-12">
+                  <h2 class={h2}>{title}</h2>
+                  <div class="mt-4 space-y-4">{items.map((p) => <p>{p}</p>)}</div>
+                </section>
+              ),
+          )
+        }
+
+        {
+          w.decision && (
+            <section class="mt-12 rounded-[var(--radius-card)] border-l-2 border-accent bg-surface p-6">
+              <h2 class="font-mono text-xs font-medium uppercase tracking-[0.18em] text-accent">Key decision</h2>
+              <h3 class="mt-2 font-medium text-text">{w.decision.title}</h3>
+              <div class="mt-3 space-y-3">{w.decision.body.map((p) => <p>{p}</p>)}</div>
+            </section>
+          )
+        }
+
+        {
+          after.map(
+            ([title, items]) =>
+              items?.length && (
+                <section class="mt-12">
+                  <h2 class={h2}>{title}</h2>
+                  <div class="mt-4 space-y-4">{items.map((p) => <p>{p}</p>)}</div>
+                </section>
+              ),
+          )
+        }
+
+        {
+          w.lesson && (
+            <blockquote class="mt-12 border-l-2 border-border pl-5 text-xl font-medium leading-snug text-text">
+              &ldquo;{w.lesson}&rdquo;
+            </blockquote>
+          )
+        }
+
+        <section class="mt-12">
+          <h2 class={h2}>Stack</h2>
+          <Tags items={w.stack} />
+        </section>
+
+        {
+          w.related.length > 0 && (
+            <section class="mt-12">
+              <h2 class={h2}>Related writing</h2>
+              <ul class="mt-4 space-y-2">
+                {w.related.map((r) => (
+                  <li>
+                    <a href={r.href} class="link group" target="_blank" rel="noreferrer">
+                      {r.title} <Arrow />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </div>
+    </article>
+
+    <div class="mt-20"><ContactCard /></div>
+
+    <nav aria-label="Case studies" class="mt-12 flex justify-between gap-4 text-sm">
+      <a href="/#work" class="link">← All work</a>
+      <a href={`/work/${next.slug}`} class="link group text-right">Next: {next.title} <Arrow /></a>
+    </nav>
+
+    <Colophon />
+  </main>
+</Base>

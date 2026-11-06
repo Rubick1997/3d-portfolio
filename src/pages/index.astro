@@ -1,0 +1,221 @@
+---
+import { Image } from "astro:assets";
+import Base from "@/layouts/Base.astro";
+import SocialLinks from "@/components/SocialLinks.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Tags from "@/components/Tags.astro";
+import Arrow from "@/components/Arrow.astro";
+import ResumeLink from "@/components/ResumeLink.astro";
+import Colophon from "@/components/Colophon.astro";
+import { experience, links, profile } from "@/data/profile";
+import { moreWork, work } from "@/data/work";
+import { postHref, posts } from "@/data/posts";
+import { profileGraph } from "@/lib/jsonld";
+import { headshot, headshotSquare } from "@/lib/headshot";
+
+const nav = [
+  { href: "#about", label: "About" },
+  { href: "#experience", label: "Experience" },
+  { href: "#work", label: "Work" },
+  { href: "#writing", label: "Writing" },
+  { href: "#contact", label: "Contact" },
+];
+
+const fmtDate = (iso: string) =>
+  new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+
+const featured = work.filter((w) => w.featured);
+const secondary = work.filter((w) => !w.featured);
+const square = await headshotSquare();
+const personImage = new URL(square.src, Astro.site).href;
+---
+
+<Base path="/" jsonLd={[profileGraph("/", personImage)]}>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:flex lg:justify-between lg:gap-16 lg:px-12">
+    <header
+      class="pt-12 sm:pt-16 lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[42%] lg:overflow-y-auto lg:flex-col lg:justify-between lg:py-20"
+    >
+      <div>
+        <Image
+          src={headshot}
+          alt="Rustam Kolumbayev"
+          width={112}
+          height={112}
+          densities={[1, 2]}
+          loading="eager"
+          fetchpriority="high"
+          class="mb-6 h-24 w-24 rounded-full object-cover ring-1 ring-border sm:h-28 sm:w-28 lg:h-24 lg:w-24"
+        />
+        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">{profile.name}</h1>
+        <p class="mt-3 text-lg font-medium text-text">{profile.role}</p>
+        <p class="mt-4 max-w-sm text-muted">{profile.positioning}</p>
+        <p class="mt-2 max-w-sm text-sm text-subtle">{profile.subline}</p>
+        <p class="mt-6 flex max-w-sm gap-2 font-mono text-xs leading-relaxed text-subtle">
+          <span class="text-accent">Now</span>
+          <span>{profile.now}</span>
+        </p>
+
+        <nav aria-label="Sections" class="mt-10 hidden lg:block">
+          <ul class="space-y-3">
+            {
+              nav.map((n) => (
+                <li>
+                  <a
+                    href={n.href}
+                    class="group flex items-center gap-4 font-mono text-xs uppercase tracking-[0.18em] text-subtle hover:text-text"
+                  >
+                    <span class="h-px w-8 bg-border transition-all group-hover:w-14 group-hover:bg-accent" />
+                    {n.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+
+      <div class="mt-8 flex items-center gap-4">
+        <SocialLinks class="-ml-2" />
+        <ThemeToggle />
+        <ResumeLink class="text-sm" />
+      </div>
+    </header>
+
+    <main id="content" class="pb-16 pt-16 lg:w-[58%] lg:py-20">
+      <section id="about" aria-labelledby="about-heading" class="mb-24">
+        <SectionHeading id="about">About</SectionHeading>
+        <div class="space-y-4 text-muted">
+          <p>{profile.shortBio}</p>
+          <p>
+            At Qloo I own three products end to end: TasteDive, the Insights dashboard and qloo.com. Through Mercor, I
+            write the tasks and rubrics frontier labs use to grade coding agents.
+          </p>
+          <p><a href="/about" class="link group">More about how I work <Arrow /></a></p>
+        </div>
+      </section>
+
+      <section id="experience" aria-labelledby="experience-heading" class="mb-24">
+        <SectionHeading id="experience">Experience</SectionHeading>
+        <ol class="space-y-12">
+          {
+            experience.map((r) => (
+              <li class="grid gap-2 sm:grid-cols-[8.5rem_1fr] sm:gap-6">
+                <p class="pt-1 font-mono text-xs uppercase tracking-wide text-subtle">{r.period}</p>
+                <div>
+                  <h3 class="font-medium leading-snug">
+                    {r.title} · {r.org}
+                    {r.orgNote && <span class="font-normal text-subtle"> ({r.orgNote})</span>}
+                  </h3>
+                  <p class="mt-2 text-muted">{r.summary}</p>
+                  <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-muted marker:text-border">
+                    {r.bullets.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                  {r.work && (
+                    <a href={`/work/${r.work}`} class="link group mt-2 inline-block text-sm">
+                      Case study <Arrow />
+                    </a>
+                  )}
+                  <Tags items={r.tags} />
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <ResumeLink class="mt-10 inline-block" />
+      </section>
+
+      <section id="work" aria-labelledby="work-heading" class="mb-24">
+        <SectionHeading id="work">Selected work</SectionHeading>
+        <ul class="space-y-4">
+          {
+            featured.map((w) => (
+              <li>
+                <a
+                  href={`/work/${w.slug}`}
+                  class="group -mx-5 block rounded-[var(--radius-card)] border border-transparent p-5 transition-colors hover:border-border hover:bg-surface"
+                >
+                  <p class="font-mono text-xs uppercase tracking-wide text-subtle">
+                    {w.org} · {w.kicker}
+                  </p>
+                  <h3 class="mt-2 font-medium leading-snug group-hover:text-accent">
+                    {w.title} <Arrow />
+                  </h3>
+                  <p class="mt-2 text-sm text-muted">{w.summary}</p>
+                  <dl class="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
+                    {w.metrics.map((m) => (
+                      <div>
+                        <dt class="sr-only">{m.label}</dt>
+                        <dd class="font-mono text-sm font-medium text-text">{m.value}</dd>
+                        <dd class="text-xs leading-snug text-subtle">{m.label}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h3 class="mb-4 mt-14 font-medium">More work</h3>
+        <ul class="divide-y divide-border border-y border-border text-sm">
+          {
+            secondary.map((w) => (
+              <li class="py-4">
+                <a href={`/work/${w.slug}`} class="link group font-medium">
+                  {w.title} <Arrow />
+                </a>
+                <p class="mt-1 text-muted">{w.summary}</p>
+              </li>
+            ))
+          }
+          {
+            moreWork.map((m) => (
+              <li class="py-4">
+                <p class="font-medium">{m.title}</p>
+                <p class="mt-1 text-muted">{m.body}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section id="writing" aria-labelledby="writing-heading" class="mb-24">
+        <SectionHeading id="writing">Writing</SectionHeading>
+        <ul class="space-y-6">
+          {
+            posts.slice(0, 4).map((p) => (
+              <li class="grid gap-1 sm:grid-cols-[8.5rem_1fr] sm:gap-6">
+                <time datetime={p.date} class="pt-0.5 font-mono text-xs uppercase tracking-wide text-subtle">
+                  {fmtDate(p.date)}
+                </time>
+                <div>
+                  <a href={postHref(p)} class="link group font-medium leading-snug" target="_blank" rel="noreferrer">
+                    {p.title} <Arrow />
+                  </a>
+                  <p class="mt-1 font-mono text-xs text-subtle">
+                    {p.readingTime} read{p.series ? ` · Series: ${p.series}` : ""}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <a href={links.medium} class="link group mt-8 inline-block text-sm" target="_blank" rel="noreferrer me">
+          All writing on Medium <Arrow />
+        </a>
+      </section>
+
+      <section id="contact" aria-labelledby="contact-heading">
+        <SectionHeading id="contact">Contact</SectionHeading>
+        <p class="text-2xl font-medium tracking-tight">{profile.cta.heading}.</p>
+        <p class="mt-3 max-w-xl text-muted">{profile.cta.body}</p>
+        <p class="mt-6"><a href={`mailto:${links.email}`} class="link font-mono text-sm">{links.email}</a></p>
+      </section>
+
+      <Colophon />
+    </main>
+  </div>
+</Base>
