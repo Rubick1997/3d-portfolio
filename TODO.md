@@ -8,4 +8,4 @@
 - [ ] GitHub profile cleanup, then set `showGithub: true` in `src/data/profile.ts`.
 - [ ] Put kolumstack.best in the LinkedIn contact info and Featured section and in the Medium bio.
 
-NDA: never name Qloo's products (consumer recs site, analytics dashboard, company website, the LLM personalization feature, the collaboration SDK). Qloo as employer is fine.
+NDA: never name Qloo's products (consumer recs site, analytics dashboard, company website, the LLM personalization feature, the collaboration SDK). Qloo appears only in the Experience timeline and JSON-LD; no CPO/CEO or other internal conversations.
