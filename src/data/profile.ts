@@ -19,9 +19,9 @@ export const profile = {
     "Senior engineer owning a consumer recommendations site, an enterprise analytics dashboard and a company website. Seattle.",
   now: "Building production AI features and grading frontier coding agents for Mercor.",
   shortBio:
-    "I'm an AI product engineer with about six years of experience. I own features end to end, from the data and the backend to the screen the user actually touches, and more and more of that work involves AI.",
+    "I'm an AI product engineer with seven years of experience. I own features end to end, from the data and the backend to the screen the user actually touches, and more and more of that work involves AI.",
   longBio: [
-    "I'm an AI product engineer with about six years of experience. My strength is the layer where people meet the system, especially AI.",
+    "I'm an AI product engineer with seven years of experience. My strength is the layer where people meet the system, especially AI.",
     "At work I own three products end to end: a consumer recommendations site, an enterprise analytics dashboard and a company website.",
     "Through Mercor, I write coding tasks and rubrics that frontier labs use to train and grade coding agents, which taught me where agents fail and how they fake success.",
     "In my own pipelines, every sentence the model writes is fact-checked against real data before a user sees it.",
