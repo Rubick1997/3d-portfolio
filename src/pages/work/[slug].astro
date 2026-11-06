@@ -8,11 +8,14 @@ import ContactCard from "@/components/ContactCard.astro";
 import Colophon from "@/components/Colophon.astro";
 import { work, type CaseStudy } from "@/data/work";
 import { breadcrumbs } from "@/lib/jsonld";
+import BitmaskDemo from "@/components/demos/BitmaskDemo.astro";
+import FocalDemo from "@/components/demos/FocalDemo.astro";
 
 export const getStaticPaths = (() => work.map((w) => ({ params: { slug: w.slug }, props: { w } }))) satisfies GetStaticPaths;
 
 const { w } = Astro.props as { w: CaseStudy };
 const next = work[(work.indexOf(w) + 1) % work.length];
+const demo = ({ "llm-output-as-build-artifact": "bitmask", "face-aware-hero-banners": "focal" } as Record<string, string>)[w.slug];
 
 const blocks: [string, string[] | undefined][] = [
   ["Problem", w.problem],
@@ -44,29 +47,34 @@ const h2 = "font-mono text-xs font-medium uppercase tracking-[0.18em] text-subtl
   <PageHeader />
   <main id="content" class="mx-auto max-w-3xl px-4 pb-16 pt-12 sm:px-6 sm:pt-16">
     <article>
-      <p class="font-mono text-xs uppercase tracking-wide text-subtle">{w.org} · {w.kicker}</p>
-      <h1 class="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{w.title}</h1>
-      <p class="mt-4 text-lg text-muted">{w.summary}</p>
+      <header class="hero-panel -mx-1 p-7 sm:-mx-6 sm:p-10">
+        <canvas data-flow></canvas>
+        <p class="hp-subtle font-mono text-xs uppercase tracking-wide">{w.org} · {w.kicker}</p>
+        <h1 class="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{w.title}</h1>
+        <p class="hp-muted mt-4 text-lg">{w.summary}</p>
+        {
+          w.metrics.length > 0 && (
+            <dl class="mt-10 grid grid-cols-2 gap-y-6 border-t border-white/10 pt-6 sm:grid-cols-4">
+              {w.metrics.map((m, i) => (
+                <div class:list={["pr-4", i % 2 === 1 && "max-sm:border-l max-sm:border-white/10 max-sm:pl-4", i > 0 && "sm:border-l sm:border-white/10 sm:pl-4"]}>
+                  <dt class="sr-only">{m.label}</dt>
+                  <dd class="stat-num text-gradient text-2xl sm:text-[1.7rem]">{m.value}</dd>
+                  <dd class="hp-subtle mt-2 text-xs leading-snug">{m.label}</dd>
+                </div>
+              ))}
+            </dl>
+          )
+        }
+      </header>
 
-      {
-        w.metrics.length > 0 && (
-          <dl class="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--radius-card)] border border-border bg-border sm:grid-cols-4">
-            {w.metrics.map((m) => (
-              <div class="bg-surface p-4">
-                <dt class="sr-only">{m.label}</dt>
-                <dd class="font-mono text-base font-medium sm:whitespace-nowrap">{m.value}</dd>
-                <dd class="mt-1 text-xs leading-snug text-subtle">{m.label}</dd>
-              </div>
-            ))}
-          </dl>
-        )
-      }
+      {demo === "bitmask" && <BitmaskDemo />}
+      {demo === "focal" && <FocalDemo />}
 
       <div class="text-[1.0625rem] text-muted [&_p]:max-w-prose">
         {
           blocks.map(
             ([title, items]) =>
-              items?.length && (
+              !!items?.length && (
                 <section class="mt-12">
                   <h2 class={h2}>{title}</h2>
                   <div class="mt-4 space-y-4">{items.map((p) => <p>{p}</p>)}</div>
@@ -88,7 +96,7 @@ const h2 = "font-mono text-xs font-medium uppercase tracking-[0.18em] text-subtl
         {
           after.map(
             ([title, items]) =>
-              items?.length && (
+              !!items?.length && (
                 <section class="mt-12">
                   <h2 class={h2}>{title}</h2>
                   <div class="mt-4 space-y-4">{items.map((p) => <p>{p}</p>)}</div>

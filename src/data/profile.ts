@@ -34,7 +34,7 @@ export const profile = {
   ],
   cta: {
     heading: "Let's talk",
-    body: "I'm looking for a product engineering role on a small, early team building agentic AI that does real work, close to customers. Based in Seattle; on-site, hybrid or remote.",
+    body: "I'm looking for an AI product engineering role, at a big tech company or a fast-moving startup, building AI that does real, useful work for people. Based in Seattle; on-site, hybrid or remote.",
   },
   location: "Seattle, WA",
   worksFor: "Qloo",
@@ -60,6 +60,14 @@ export const links = {
   showGithub: false,
   resume: "/resume.pdf" as string | null,
 } as const;
+
+// Big numbers on the home page. Each one is sourced in src/data/work.ts.
+export const proofStats = [
+  { value: "4,095", label: "LLM answers precomputed and fact-checked", href: "/work/llm-output-as-build-artifact" },
+  { value: "2M+", label: "pages with face-aware hero banners", href: "/work/face-aware-hero-banners" },
+  { value: "−40%", label: "dashboard page load time", href: "/work/analytics-dashboard-rebuild" },
+  { value: "15–35", label: "atomic criteria per agent-eval rubric", href: "/work/mercor-agent-evaluation" },
+];
 
 export type Principle = { title: string; body: string; proof: { label: string; href: string } };
 

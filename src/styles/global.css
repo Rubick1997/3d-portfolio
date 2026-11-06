@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@fontsource/ibm-plex-sans/300.css";
 @import "@fontsource/ibm-plex-sans/400.css";
 @import "@fontsource/ibm-plex-sans/500.css";
 @import "@fontsource/ibm-plex-sans/600.css";
@@ -17,6 +18,9 @@
   --color-accent: #a8431a;
   --color-accent-soft: #f6e6dd;
   --color-focus: #a8431a;
+  --color-amber: #b7791f;
+  --color-rose: #b83a5e;
+  --glow: rgb(168 67 26 / 0.10);
   color-scheme: light;
 }
 
@@ -31,6 +35,9 @@
     --color-accent: #f0905f;
     --color-accent-soft: #2a1d17;
     --color-focus: #f0905f;
+    --color-amber: #f5c26b;
+    --color-rose: #ef7a9b;
+    --glow: rgb(240 144 95 / 0.10);
     color-scheme: dark;
   }
 }
@@ -45,6 +52,9 @@
   --color-accent: #f0905f;
   --color-accent-soft: #2a1d17;
   --color-focus: #f0905f;
+  --color-amber: #f5c26b;
+  --color-rose: #ef7a9b;
+  --glow: rgb(240 144 95 / 0.10);
   color-scheme: dark;
 }
 
@@ -57,6 +67,8 @@
   --color-border: var(--color-border);
   --color-accent: var(--color-accent);
   --color-accent-soft: var(--color-accent-soft);
+  --color-amber: var(--color-amber);
+  --color-rose: var(--color-rose);
   --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
   --radius-card: 0.5rem;
@@ -236,3 +248,138 @@ section[id] {
     background-color: var(--shiki-dark-bg);
   }
 }
+
+/* ---------- Visual layer ---------- */
+
+/* Soft ambient glow at the top of every page. */
+body {
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, var(--glow), transparent 70%),
+    radial-gradient(40rem 30rem at -10% 10%, color-mix(in srgb, var(--color-rose) 6%, transparent), transparent 70%),
+    var(--color-bg);
+  background-attachment: fixed;
+}
+
+/* Gradient text for one emphasised phrase. */
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-accent), var(--color-amber) 55%, var(--color-rose));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* The dark hero panel is dark in both themes. */
+.hero-panel {
+  --hp-text: #eef0f3;
+  --hp-muted: #b4bcc7;
+  --hp-subtle: #8a94a1;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgb(240 144 95 / 0.22), transparent 55%),
+    radial-gradient(90% 80% at 100% 100%, rgb(239 122 155 / 0.16), transparent 60%),
+    #0b0e13;
+  color: var(--hp-text);
+  box-shadow: 0 30px 80px -40px rgb(11 14 19 / 0.6), inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+.hero-panel canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
+}
+.hero-panel .hp-muted { color: var(--hp-muted); }
+.hero-panel .hp-subtle { color: var(--hp-subtle); }
+.hero-panel .text-gradient {
+  background-image: linear-gradient(100deg, #f0905f, #f5c26b 55%, #ef7a9b);
+}
+
+/* Cards with a glow that follows the pointer (set by --mx/--my). */
+.glow-card {
+  position: relative;
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  border-radius: 1rem;
+  transition: border-color 200ms, transform 200ms, box-shadow 200ms;
+}
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 0%), var(--color-accent), transparent 45%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 250ms;
+  pointer-events: none;
+}
+.glow-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(28rem circle at var(--mx, 50%) var(--my, 0%), var(--glow), transparent 50%);
+  opacity: 0;
+  transition: opacity 250ms;
+  pointer-events: none;
+}
+.glow-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 50px -30px rgb(0 0 0 / 0.35);
+}
+.glow-card:hover::before,
+.glow-card:hover::after,
+.glow-card:focus-within::before {
+  opacity: 1;
+}
+
+/* Big, light numerals. */
+.stat-num {
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reveal on scroll. Only when JS is running, so content never stays hidden. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms cubic-bezier(.2,.7,.2,1), transform 700ms cubic-bezier(.2,.7,.2,1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Section nav: active state set from scroll position. */
+.rail-link[aria-current="true"] { color: #fff; }
+.rail-link[aria-current="true"] .rail-line { width: 3.5rem; background: #f0905f; }
+
+/* Project illustrations (pure SVG + CSS). */
+.viz { color: var(--color-accent); }
+.viz .cell { fill: currentColor; opacity: 0.12; animation: viz-cell 4.8s infinite; }
+@keyframes viz-cell { 0%, 8% { opacity: 0.12 } 18%, 70% { opacity: 0.9 } 85%, 100% { opacity: 0.12 } }
+.viz .crop { animation: viz-crop 5s ease-in-out infinite alternate; }
+@keyframes viz-crop { from { transform: translateY(34px) } to { transform: translateY(6px) } }
+.viz .bar { transform-box: fill-box; transform-origin: bottom; animation: viz-bar 3.6s ease-in-out infinite alternate; }
+@keyframes viz-bar { from { transform: scaleY(0.35) } to { transform: scaleY(1) } }
+.viz .packet { animation: viz-packet 3.2s linear infinite; }
+@keyframes viz-packet { from { transform: translateX(0); opacity: 0 } 10% { opacity: 1 } 90% { opacity: 1 } to { transform: translateX(150px); opacity: 0 } }
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1; transform: none; }
+  .viz * { animation: none !important; }
+  .viz .cell { opacity: 0.6; }
+}
+
+.hero-panel .text-muted { color: var(--hp-muted); }
+.hero-panel .text-muted:hover { color: #f0905f; }

@@ -1,0 +1,75 @@
+---
+// Live demo of the client half of face-aware framing, on Rustam's own headshot.
+// Formula from Part 1: p = clamp((f − v/2) / (1 − v), 0, 1), v = visible fraction.
+import { getImage } from "astro:assets";
+import headshot from "@/assets/headshot.jpg";
+
+const img = await getImage({ src: headshot, width: 900, format: "webp", quality: 78 });
+const FOCUS = { x: 0.51, y: 0.24 }; // face centre in this photo, normalised
+const RATIO = headshot.width / headshot.height;
+---
+
+<section
+  class="demo mt-10 rounded-2xl border border-border bg-surface p-6 sm:p-8"
+  data-focal
+  data-fx={FOCUS.x}
+  data-fy={FOCUS.y}
+  data-ratio={RATIO}
+  aria-labelledby="fd-title"
+>
+  <p class="font-mono text-xs uppercase tracking-[0.18em] text-accent">Try it</p>
+  <h2 id="fd-title" class="mt-1 text-xl font-semibold text-text">Same photo, same CSS, one different number</h2>
+  <p class="mt-2 max-w-prose text-sm text-muted">
+    My own portrait in a hero banner. Drag to make the banner wider. The default crop keeps the centre; the focal point
+    keeps the face, using the conversion from part one.
+  </p>
+
+  <label class="mt-6 flex items-center gap-4 text-sm text-muted">
+    <span class="shrink-0 font-mono text-xs">1 : 1</span>
+    <input type="range" min="1" max="3.5" step="0.05" value="2.6" data-aspect class="w-full accent-[var(--color-accent)]" aria-label="Banner aspect ratio" />
+    <span class="shrink-0 font-mono text-xs">3.5 : 1</span>
+  </label>
+
+  <div class="mt-6 grid gap-5">
+    <figure>
+      <div class="overflow-hidden rounded-xl border border-border" data-box>
+        <img src={img.src} alt="" class="h-full w-full object-cover" style="object-position: 50% 50%" loading="lazy" decoding="async" />
+      </div>
+      <figcaption class="mt-2 flex justify-between font-mono text-xs text-subtle">
+        <span>Default crop</span><span>object-position: 50% 50%</span>
+      </figcaption>
+    </figure>
+    <figure>
+      <div class="relative overflow-hidden rounded-xl border border-accent/50" data-box>
+        <img src={img.src} alt="" class="h-full w-full object-cover" data-focal-img loading="lazy" decoding="async" />
+      </div>
+      <figcaption class="mt-2 flex justify-between font-mono text-xs text-subtle">
+        <span class="text-accent">Focal point</span><span data-pos>object-position: 50% 24%</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<script>
+  const clamp = (n: number) => Math.min(1, Math.max(0, n));
+  document.querySelectorAll<HTMLElement>("[data-focal]").forEach((root) => {
+    const fx = Number(root.dataset.fx), fy = Number(root.dataset.fy), r = Number(root.dataset.ratio);
+    const range = root.querySelector<HTMLInputElement>("[data-aspect]")!;
+    const boxes = root.querySelectorAll<HTMLElement>("[data-box]");
+    const img = root.querySelector<HTMLImageElement>("[data-focal-img]")!;
+    const pos = root.querySelector("[data-pos]")!;
+    const update = () => {
+      const a = Number(range.value);
+      boxes.forEach((b) => (b.style.aspectRatio = String(a)));
+      // object-fit: cover. A box wider than the image shows a vertical slice of height v.
+      const vy = a > r ? r / a : 1, vx = a < r ? a / r : 1;
+      const px = vx < 1 ? clamp((fx - vx / 2) / (1 - vx)) : 0.5;
+      const py = vy < 1 ? clamp((fy - vy / 2) / (1 - vy)) : 0.5;
+      const value = `${Math.round(px * 100)}% ${Math.round(py * 100)}%`;
+      img.style.objectPosition = value;
+      pos.textContent = `object-position: ${value}`;
+    };
+    range.addEventListener("input", update);
+    update();
+  });
+</script>

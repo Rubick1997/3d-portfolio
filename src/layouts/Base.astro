@@ -50,6 +50,7 @@ const image = new URL(ogImage, site.url).href;
     <meta name="twitter:image" content={image} />
 
     <script is:inline>
+      document.documentElement.classList.add("js");
       try {
         var t = localStorage.getItem("theme");
         if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
@@ -66,6 +67,8 @@ const image = new URL(ogImage, site.url).href;
     <slot />
     <script>
       import "@/lib/theme";
+      import "@/lib/fx";
+      import "@/lib/flow";
     </script>
   </body>
 </html>
